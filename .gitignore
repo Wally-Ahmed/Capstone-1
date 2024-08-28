@@ -1,0 +1,11 @@
+/backend/node_modules/
+
+/frontend/admin/node_modules/
+/frontend/employee/node_modules/
+/frontend/interface/node_modules/
+
+/frontend/admin/.next/
+/frontend/employee/.next/
+/frontend/interface/.next/
+
+secrets.ts
