@@ -1,6 +1,6 @@
 import { dbStr, secretKey, backendPort } from '../../globalConfig'
 
-export const port = backendPort
+const port = backendPort
 
 
-module.exports = { secretKey, dbStr, port }
+export { secretKey, dbStr, port }
