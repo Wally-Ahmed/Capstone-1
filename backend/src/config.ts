@@ -1,6 +1,6 @@
-export const secretKey = 'secretKey';
-export const dbStr = 'postgresql://test:pass@localhost/restaurant_manager';
-export const port = 3000
+import { dbStr, secretKey, backendPort } from '../../globalConfig'
+
+export const port = backendPort
 
 
 module.exports = { secretKey, dbStr, port }
