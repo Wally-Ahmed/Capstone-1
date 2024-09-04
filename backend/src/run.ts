@@ -1,4 +1,4 @@
-import { server } from './__utilities__/namespace';
+const { server } = require('./__utilities__/namespace');
 
 const { port } = require("./config");
 
