@@ -1,6 +1,6 @@
-const { server } = require('./__utilities__/namespace');
+import { server } from './__utilities__/namespace';
 
-const { port } = require("./config");
+import { port } from "./config";
 
 // console.log(server)
 
