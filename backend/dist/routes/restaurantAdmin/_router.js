@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const auth_1 = __importDefault(require("./auth"));
+const layout_1 = __importDefault(require("./layout"));
+const menu_1 = __importDefault(require("./menu"));
+const schedule_1 = __importDefault(require("./schedule"));
+const employee_1 = __importDefault(require("./employee"));
+const restaurantInterface_1 = __importDefault(require("./restaurantInterface"));
+const router = express_1.default.Router();
+router.use('/', auth_1.default);
+router.use('/', layout_1.default);
+router.use('/', menu_1.default);
+router.use('/', schedule_1.default);
+router.use('/', employee_1.default);
+router.use('/', restaurantInterface_1.default);
+exports.default = router;
