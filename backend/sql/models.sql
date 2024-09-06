@@ -135,7 +135,7 @@ CREATE TABLE Shift (
     tip_pool_id UUID,
     FOREIGN KEY (tip_pool_id) REFERENCES Tip_pool(id), --
     restaurant_employee_id UUID NOT NULL,
-    FOREIGN KEY (restaurant_employee_id) REFERENCES Restaurant_Employee(id) --
+    FOREIGN KEY (restaurant_employee_id) REFERENCES Restaurant_Employee(id), --
     restaurant_id UUID,
     FOREIGN KEY (restaurant_id) REFERENCES Restaurant(id) --
 );
