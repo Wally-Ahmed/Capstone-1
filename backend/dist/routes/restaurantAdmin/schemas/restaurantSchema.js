@@ -13,11 +13,7 @@ const restaurantSchema = {
         restaurant_name: { type: "string" },
         restaurant_address: { type: "string" },
         email: { type: "string", format: "email" },
-        phone: {
-            type: "string",
-            pattern: "^(\\+1)?\\s?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$",
-            errorMessage: "Invalid phone number format. Expected format: +1 (XXX) XXX-XXXX.",
-        },
+        phone: { type: "string" },
         password: { type: "string" },
         confirmPassword: { type: "string" },
     },
