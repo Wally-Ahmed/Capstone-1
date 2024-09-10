@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { backendURL } from '@/public/config';
+import { interfaceURL } from '../../../../globalConfig';
 
 interface RestaurantInterfaceProperties {
     id: string;
@@ -188,6 +189,15 @@ const MenuTitles: React.FC<MenuTitlesProps> = ({ jwt }) => {
             <div className="container mx-auto">
                 <div className="relative">
                     <div className="flex flex-col items-center gap-4 p-4 border border-gray-300 rounded-lg shadow-lg">
+                        <div className='w-full'>
+
+                            <a
+                                className="px-4 py-2 h-10 w-50 mr-1 bg-blue-500 text-white rounded hover:bg-blue-700"
+                                href={interfaceURL}
+                            >
+                                Interface Page
+                            </a>
+                        </div>
                         {interfaces.map((interfaceItem) => (
                             <div key={interfaceItem.id} className="relative w-full">
                                 <div className="flex flex-col items-start justify-start w-full h-55 p-4 bg-gray-200 border border-gray-400 rounded shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out cursor-pointer">

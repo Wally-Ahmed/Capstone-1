@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { backendURL } from '@/public/config';
 import Link from 'next/link';
+import { employeeURL } from '../../../../globalConfig';
 
 interface EmployeeProperties {
     id: string;
@@ -108,12 +109,18 @@ const MenuTitles: React.FC<MenuTitlesProps> = ({ jwt }) => {
                                 value={employeeCode}
                                 onChange={(e) => setEmployeeCode(e.target.value)}
                                 placeholder="Enter employee code to register a new employee"
-                                className="w-full p-2 mr-2 h-10 border border-gray-300 rounded"
+                                className="w-4/6 p-2 mr-2 h-10 border border-gray-300 rounded"
                                 required
                             />
+                            <a
+                                className="px-4 py-2 h-10 w-50 mr-1 bg-blue-500 text-white rounded hover:bg-blue-700"
+                                href={employeeURL}
+                            >
+                                Employee Page
+                            </a>
                             <button
                                 type="submit"
-                                className="px-4 py-2 h-10 w-40 bg-blue-500 text-white rounded hover:bg-blue-700"
+                                className="px-4 py-2 h-10 w-50 mr-1 bg-blue-500 text-white rounded hover:bg-blue-700"
                             >
                                 Link Employee
                             </button>
