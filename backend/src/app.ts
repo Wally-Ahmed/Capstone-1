@@ -6,11 +6,12 @@ import restaurantStaffRouter from './routes/restaurantStaff/_router';
 import restaurantInterfaceRouter from './routes/restaurantInterface/_router';
 import restaurantGuestRouter from './routes/restaurantGuest/_router';
 import { ExpressError } from './__utilities__/expressError';
+import { adminURL, employeeURL, interfaceURL } from './config';
 
 export const app = express();
 
 const corsOptions = {
-    origin: ['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003'], // Front-end URL
+    origin: [adminURL, employeeURL, interfaceURL], // Front-end URL
     optionsSuccessStatus: 200
 };
 
