@@ -8,6 +8,6 @@
 /frontend/employee/.next/
 /frontend/interface/.next/
 
-
+/backend/dist/
 
 secrets.ts
