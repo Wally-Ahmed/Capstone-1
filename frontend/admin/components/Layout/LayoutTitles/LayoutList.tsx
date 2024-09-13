@@ -145,6 +145,7 @@ const LayoutList: React.FC<LayoutListProps> = ({ jwt, activeLayoutId }) => {
             if (res.ok) {
                 await updateLayouts();
                 handleCloseEditForm();
+                router.refresh();
             } else {
                 throw new Error('Failed to set active layout');
             }
