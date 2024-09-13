@@ -78,6 +78,7 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
     const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
     const [nullReservations, setNullReservations] = useState<Reservation[] | null>(null);
     const [showReservationsTimeline, setShowReservationsTimeline] = useState(false);
+    const [noLayout, setNoLayout] = useState<boolean>(false)
     // const [selectedReservation, setSelectedReservation]
 
     const router = useRouter();
@@ -125,7 +126,7 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
 
 
 
-        console.log('hit')
+        // console.log('hit')
         try {
             const resLayout = await fetch(`${backendURL}interface/tablemap/layout`, {
                 method: 'GET',
@@ -141,8 +142,10 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
             }
 
             const layoutData = await resLayout.json();
-            console.log(`${backendURL}interface/tablemap/layout`)
+            // console.log(`${backendURL}interface/tablemap/layout`)
             setLayout(layoutData.layout);
+
+            if (!layoutData.layout) { setNoLayout(true) };
 
             const resResvations = await fetch(`${backendURL}interface/tablemap/reservation`, {
                 method: 'GET',
@@ -534,7 +537,9 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
 
     if (!layout) {
         return <LoadingSpinner />;
-    }
+    } else if (noLayout) {
+        return <h1>A layout is not active for this restaurant</h1>
+    };
 
     return (
         <>
