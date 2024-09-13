@@ -256,8 +256,6 @@ CREATE TABLE Tab (
 
 CREATE TABLE Ticket (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    item_name VARCHAR(255) NOT NULL,
-    variation_description VARCHAR(255) NOT NULL,
     comments VARCHAR(255) NOT NULL,
     iat TIMESTAMPTZ NOT NULL,
     time_completed TIMESTAMPTZ,
@@ -271,6 +269,8 @@ CREATE TABLE Ticket (
 
 CREATE TABLE Ticket_item (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    item_name VARCHAR(255) NOT NULL,
+    variation_description VARCHAR(255) NOT NULL,
     comments VARCHAR(255),
     price DECIMAL(8, 2) NOT NULL,
     prep_time_required BOOLEAN NOT NULL,
