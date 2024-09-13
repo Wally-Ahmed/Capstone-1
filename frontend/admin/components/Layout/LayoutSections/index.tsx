@@ -46,8 +46,8 @@ const LayoutComponent: React.FC<LayoutComponentProps> = ({ jwt }) => {
     const [layout, setLayout] = useState<Layout>({ id: '', layout_name: '', sections: [] });
     const [showForm, setShowForm] = useState(false);
     const [sectionName, setSectionName] = useState('');
-    const [width, setWidth] = useState(1);
-    const [height, setHeight] = useState(1);
+    const [width, setWidth] = useState(10);
+    const [height, setHeight] = useState(10);
 
 
     const [selectedSection, setSelectedSection] = useState<Section | null>(null)
