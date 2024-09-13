@@ -10,10 +10,9 @@ const _router_1 = __importDefault(require("./routes/restaurantAdmin/_router"));
 const _router_2 = __importDefault(require("./routes/restaurantStaff/_router"));
 const _router_3 = __importDefault(require("./routes/restaurantInterface/_router"));
 const _router_4 = __importDefault(require("./routes/restaurantGuest/_router"));
-const config_1 = require("./config");
 exports.app = (0, express_1.default)();
 const corsOptions = {
-    origin: [config_1.adminURL, config_1.employeeURL, config_1.interfaceURL], // Front-end URL
+    origin: '*', // Front-end URL
     optionsSuccessStatus: 200
 };
 exports.app.use((0, cors_1.default)(corsOptions));
