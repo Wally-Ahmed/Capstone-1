@@ -11,7 +11,7 @@ import { adminURL, employeeURL, interfaceURL } from './config';
 export const app = express();
 
 const corsOptions = {
-    origin: '*', // Front-end URL
+    origin: [adminURL, employeeURL, interfaceURL], // Front-end URL
     optionsSuccessStatus: 200
 };
 

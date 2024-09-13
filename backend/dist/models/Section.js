@@ -34,8 +34,8 @@ class Section extends DatabaseObject_1.DatabaseObject {
         this.layout_id = layout_id;
         this.id = id;
     }
-    getTablesOutDimensions(width = 1, height = 1) {
-        return __awaiter(this, void 0, void 0, function* () {
+    getTablesOutDimensions() {
+        return __awaiter(this, arguments, void 0, function* (width = 1, height = 1) {
             try {
                 const query = 'SELECT * FROM Restaurant_table WHERE section_id = $1 AND (x >= $2 OR y >= $3)';
                 const res = yield db_1.default.query(query, [this.id, width, height]);
