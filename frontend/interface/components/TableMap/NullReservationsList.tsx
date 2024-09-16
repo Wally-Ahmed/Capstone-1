@@ -4,7 +4,7 @@ import { Reservation } from '.';
 interface NullReservationsListProps {
     setShowNullReservations: (show: boolean) => void;
     handleOpenNewReservation: () => void;
-    nullReservations: Reservation[];
+    nullReservations: Reservation[] | null;
     selectReservation: (reservation: Reservation) => void;
 }
 
@@ -20,7 +20,7 @@ export const NullReservationsList: React.FC<NullReservationsListProps> = ({
                 <h2 className="text-2xl font-bold mb-4">Unassigned Reservations</h2>
                 <p>Select a reservation and assign it to a table.</p>
                 <div className="mt-4 space-y-4 overflow-y-auto">
-                    {nullReservations.length > 0 ? (
+                    {(nullReservations && nullReservations.length > 0) ? (
                         nullReservations.map((reservation, index) => (
                             <div
                                 key={index}

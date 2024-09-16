@@ -20,6 +20,7 @@ import useQueryString from '@/hooks/useQueryString';
 import ReservationTimeline from './ReservationTimeline';
 import { EditReservationForm } from './EditReservationForm';
 import NewTabForm from './NewTabForm';
+import { useSocket } from '@/hooks/useSocket';
 
 export const ItemTypes = {
     TABLE: 'table',
@@ -219,25 +220,25 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
     }, [layout])
 
 
-    // const socket = io(`${backendURL}tablemap`, { auth: { token: jwt } })
+    const socket = useSocket(jwt, 'tablemap')
 
-    // useEffect(() => {
-    //     socket.on('connect', async () => {
-    //         console.log('connect')
-    //         await getLayout()
+    useEffect(() => {
+        socket.on('connect', async () => {
+            console.log('connect')
+            await getLayout()
 
-    //     });
+        });
 
-    //     socket.on('update', async () => {
-    //         console.log('update')
-    //         getLayout()
-    //     });
+        socket.on('update', async () => {
+            console.log('update')
+            await getLayout()
+        });
 
-    //     socket.on('disconnect', () => {
-    //         console.log('disconnect')
-    //         router.refresh()
-    //     });
-    // }, [socket]);
+        socket.on('disconnect', () => {
+            console.log('disconnect')
+            router.refresh()
+        });
+    }, [socket]);
 
     useEffect(() => {
         const timerId = setInterval(() => {

@@ -13,6 +13,7 @@ import Clock from './Clock';
 import ShiftForm from './ShiftForm';
 import ShiftList from './ShiftList';
 import { LoadingSpinner } from './LoadingSpinner';
+import { useSocket } from '@/hooks/useSocket';
 // import { Grid } from "./Grid";
 
 
@@ -85,27 +86,25 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
     }, [])
 
 
-    // const socket = io(`${backendURL}shift`, { auth: { token: jwt } })
+    const socket = useSocket(jwt, 'shift')
 
-    // useEffect(() => {
-    //     socket.on('connect', async () => {
-    //         console.log('connect')
-    //         await getShifts()
-    //         // else if (selectedSection) {
-    //         //     setSelectedSectionIdQuery(selectedSection.id)
-    //         // }
-    //     });
+    useEffect(() => {
+        socket.on('connect', async () => {
+            console.log('connect')
+            await getShifts()
 
-    //     socket.on('update', async () => {
-    //         console.log('update')
-    //         getShifts()
-    //     });
+        });
 
-    //     socket.on('disconnect', () => {
-    //         console.log('disconnect')
-    //         // router.refresh()
-    //     });
-    // }, [socket]);
+        socket.on('update', async () => {
+            console.log('update')
+            await getShifts()
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnect')
+            router.refresh()
+        });
+    }, [socket]);
 
 
     useEffect(() => {

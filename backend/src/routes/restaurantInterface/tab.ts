@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { tabNsp } from '../../__utilities__/namespace';
+import { tabNsp } from '../../__utilities__/app';
 import { Employee } from '../../models/Employee';
 import { ActiveShiftProperties, Shift } from '../../models/Shift';
 import { TipPool } from '../../models/TipPool';

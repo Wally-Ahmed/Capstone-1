@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import TicketList from './TicketList';
 import { LoadingSpinner } from './LoadingSpinner';
 import ConfirmSubmit from './ConfirmSubmit';
+import { useSocket } from '@/hooks/useSocket';
 // import { Grid } from "./Grid";
 
 export interface TicketItemProperties {
@@ -89,27 +90,25 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
     }, [])
 
 
-    // const socket = io(`${backendURL}kitchen`, { auth: { token: jwt } })
+    const socket = useSocket(jwt, 'kitchen')
 
-    // useEffect(() => {
-    //     socket.on('connect', async () => {
-    //         console.log('connect')
-    //         await getTickets()
-    //         // else if (selectedSection) {
-    //         //     setSelectedSectionIdQuery(selectedSection.id)
-    //         // }
-    //     });
+    useEffect(() => {
+        socket.on('connect', async () => {
+            console.log('connect')
+            await getTickets()
 
-    //     socket.on('update', async () => {
-    //         console.log('update')
-    //         getTickets()
-    //     });
+        });
 
-    //     socket.on('disconnect', () => {
-    //         console.log('disconnect')
-    //         // router.refresh()
-    //     });
-    // }, [socket]);
+        socket.on('update', async () => {
+            console.log('update')
+            await getTickets()
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnect')
+            router.refresh()
+        });
+    }, [socket]);
 
 
     useEffect(() => {
