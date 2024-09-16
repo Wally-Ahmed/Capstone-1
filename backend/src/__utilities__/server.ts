@@ -1,9 +1,9 @@
-import http from 'http';
-import { app } from '../app';
-import cors from 'cors';
+// import http from 'http';
+// import { app } from './app';
+// import cors from 'cors';
 
-app.use(cors());
+// app.use(cors());
 
-export const server = http.createServer(app);
+// export const server = http.createServer(app);
 
-// module.exports = { server }
+// // module.exports = { server }

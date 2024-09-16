@@ -1,4 +1,4 @@
-import { server } from './__utilities__/namespace';
+import { server } from './__utilities__/app';
 
 import { port } from "./config";
 

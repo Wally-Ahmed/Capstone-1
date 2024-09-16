@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { tablemapNsp } from '../../__utilities__/namespace'
+import { tablemapNsp } from '../../__utilities__/app'
 import { validateSchema } from '../../__utilities__/validateSchema';
 import reservationSchema from './schemas/reservationSchema';
 import { JSONSchemaType } from 'ajv';

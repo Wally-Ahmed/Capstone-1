@@ -1,10 +1,13 @@
 import { Server, Socket } from 'socket.io';
-import { server } from './server';
-import jwt from 'jsonwebtoken';
-import { secretKey } from '../config';
-
-import { ExpressError, NotFoundError, UnauthorizedError, BadRequestError, ForbiddenError } from './expressError';
 import { RestaurantInterface } from '../models/RestaurantInterface';
+
+import http from 'http';
+import { app } from './app';
+import cors from 'cors';
+
+app.use(cors());
+
+const server = http.createServer(app);
 
 export interface InterfaceSocket extends Socket {
     user?: RestaurantInterface;
@@ -28,6 +31,6 @@ io.on("connection", (socket) => {
 
 
 
-export const socketServer = server
+// export const socketServer = server
 
 // module.exports = { io, socketServer };

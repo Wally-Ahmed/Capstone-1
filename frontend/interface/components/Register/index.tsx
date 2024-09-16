@@ -11,6 +11,7 @@ import { TabList } from './TabList';
 import NewTabForm from './NewTabForm';
 import TabInfo from './TabInfo';
 import { fullMenu, fullTab } from './types';
+import { useSocket } from '@/hooks/useSocket';
 // import { Grid } from "./Grid";
 
 
@@ -106,27 +107,25 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
     }, [tabs])
 
 
-    // const socket = io(`${backendURL}tab`, { auth: { token: jwt } })
+    const socket = useSocket(jwt, 'tab')
 
-    // useEffect(() => {
-    //     socket.on('connect', async () => {
-    //         console.log('connect')
-    //         await getTabs()
-    //         // else if (selectedSection) {
-    //         //     setSelectedTabIdQuery(selectedSection.id)
-    //         // }
-    //     });
+    useEffect(() => {
+        socket.on('connect', async () => {
+            console.log('connect')
+            await getTabs()
 
-    //     socket.on('update', async () => {
-    //         console.log('update')
-    //         getTabs()
-    //     });
+        });
 
-    //     socket.on('disconnect', () => {
-    //         console.log('disconnect')
-    //         // router.refresh()
-    //     });
-    // }, [socket]);
+        socket.on('update', async () => {
+            console.log('update')
+            await getTabs()
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnect')
+            router.refresh()
+        });
+    }, [socket]);
 
 
     useEffect(() => {

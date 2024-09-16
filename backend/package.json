@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "jest --config jest.config.ts",
+    "dev": "npm install && tsc && nodemon ./dist/run.js",
     "build": "npm install && tsc",
     "start": "node ./dist/run.js"
   },

@@ -7,7 +7,7 @@ import { authenticateInterface } from '../../__utilities__/authenticateToken';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { tablemapNsp } from '../../__utilities__/namespace'
+import { io } from '../../__utilities__/app'
 import { JSONSchemaType } from 'ajv';
 import reservationSchema from './schemas/reservation';
 import { validateSchema } from '../../__utilities__/validateSchema';
@@ -30,12 +30,12 @@ router.route('/reservation/:restaurant_id')
             await reservation.save();
 
 
-            tablemapNsp.to(restaurant_id as string).emit('new-reservation');
+            io.to(restaurant_id as string).emit('new-reservation');
 
             return res.sendStatus(201);
 
         } catch (err) {
-            tablemapNsp.to(restaurant_id as string).emit('new-reservation');
+            io.to(restaurant_id as string).emit('new-reservation');
             next(err);
         };
     })
