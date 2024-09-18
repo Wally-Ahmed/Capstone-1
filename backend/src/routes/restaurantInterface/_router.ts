@@ -8,6 +8,8 @@ import tablemapRoutes from './tablemap_refresh';
 import shiftRoutes from './shift_refresh';
 import kitchenViewRoutes from './kitchenView_refresh';
 
+import checkoutRoutes from './checkout';
+
 import tabIORoutes from './tab';
 import tablemapIORoutes from './tablemap';
 import reservationIORoutes from './reservation';
@@ -22,8 +24,8 @@ router.use('/tablemap', tablemapRoutes);
 router.use('/shift', shiftRoutes);
 router.use('/kitchen', kitchenViewRoutes);
 
-// router.use(cors());
 
+router.use('/tab', checkoutRoutes);
 router.use('/tab', tabIORoutes);
 router.use('/tablemap', tablemapIORoutes);
 router.use('/tablemap', reservationIORoutes);

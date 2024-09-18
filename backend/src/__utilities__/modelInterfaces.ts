@@ -1,7 +1,7 @@
 import { DatabaseObject } from '../models/DatabaseObject'
 
 export interface DatabaseObjectProperties {
-    id?: string,  // UUID as a string
+    id?: string;  // UUID as a string
 }
 
 export interface RestaurantProperties extends DatabaseObjectProperties {
@@ -37,11 +37,14 @@ export interface RestaurantInterfaceProperties extends DatabaseObjectProperties 
     time_created: Date;
     link_code: string | null;
     token_code: string | null;
+    sumup_oauth2_access_token: string | null;
+    sumup_oauth2_refresh_token: string | null;
+    last_checkout_instrument_type: string | null;
     restaurant_id: string;
-    tablemap_permission: boolean,
-    tab_permission: boolean,
-    kitchen_permission: boolean,
-    shift_permission: boolean,
+    tablemap_permission: boolean;
+    tab_permission: boolean;
+    kitchen_permission: boolean;
+    shift_permission: boolean;
 }
 
 export interface TipPoolProperties extends DatabaseObjectProperties {
@@ -91,10 +94,10 @@ export interface EmployeeProperties extends DatabaseObjectProperties {
     employee_phone: string;
     password_hash: string;
     employee_code: string | null;
-    auth_token1: string | null,
-    auth_token2: string | null,
-    auth_token3: string | null,
-    auth_token4: string | null,
+    auth_token1: string | null;
+    auth_token2: string | null;
+    auth_token3: string | null;
+    auth_token4: string | null;
 }
 
 export interface RestaurantEmployeeProperties extends DatabaseObjectProperties {
@@ -157,6 +160,7 @@ export interface MenuItemVariationProperties extends DatabaseObjectProperties {
 export interface TabProperties extends DatabaseObjectProperties {
     customer_name: string;
     discount: number;
+    time_completed: Date | null;
     calculated_tax: number | null;
     total_tip: number | null;
     tab_status: string;

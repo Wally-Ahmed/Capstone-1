@@ -340,7 +340,7 @@ export class Restaurant extends DatabaseObject {
 
             // Map over the resulting rows and turn each one into a new Tab instance
             const tabs: Tab[] = res.rows.map((row: TabProperties) => {
-                return new Tab(row.customer_name, row.server_restaurant_employee_id, row.restaurant_table_id, row.restaurant_id, row.tab_status, row.discount, row.calculated_tax, row.total_tip, row.id,);
+                return new Tab(row.customer_name, row.server_restaurant_employee_id, row.restaurant_table_id, row.restaurant_id, row.tab_status, row.discount, row.time_completed, row.calculated_tax, row.total_tip, row.id,);
             });
             return tabs;
         } catch (err) {

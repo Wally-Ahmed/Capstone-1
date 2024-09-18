@@ -2,7 +2,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Drop existing tables if they exist
-DROP TABLE IF EXISTS Rank_permission, Employment_status, Table_status, Time_zone, Exit_code, Tab_status, Ticket_status, Restaurant, Restaurant_interface, Tip_pool, Employee, Restaurant_Employee, Shift, Shift_modification, Layout, Section, Restaurant_table, Reservation, Menu, Menu_section, Menu_item_root, Menu_item_variation, Tab, Ticket, Ticket_item, Delivery_ticket, Delivery_ticket_item CASCADE;
+DROP TABLE IF EXISTS Rank_permission, Employment_status, Table_status, Time_zone, Exit_code, Tab_status, Ticket_status, Checkout_instrument_type, Restaurant, Restaurant_interface, Tip_pool, Employee, Restaurant_Employee, Shift, Shift_modification, Layout, Section, Restaurant_table, Reservation, Menu, Menu_section, Menu_item_root, Menu_item_variation, Tab, Ticket, Ticket_item, Delivery_ticket, Delivery_ticket_item CASCADE;
 
 -- Dependency Tables
 
@@ -34,6 +34,10 @@ CREATE TABLE Tab_status (
 CREATE TABLE Ticket_status (
     status VARCHAR(255) PRIMARY KEY
 ); -- in-progress, completed
+
+CREATE TABLE Checkout_instrument_type (
+    instrument_type VARCHAR(255) PRIMARY KEY
+); -- SumUp-Solo
 
 
 -- Restaurant Info
@@ -84,6 +88,10 @@ CREATE TABLE Restaurant_interface (
     tab_permission BOOLEAN NOT NULL,
     kitchen_permission BOOLEAN NOT NULL,
     shift_permission BOOLEAN NOT NULL,
+    sumup_oauth2_access_token TEXT,
+    sumup_oauth2_refresh_token TEXT,
+    last_checkout_instrument_type VARCHAR(255),
+    FOREIGN KEY (last_checkout_instrument_type) REFERENCES Checkout_instrument_type(instrument_type),
     restaurant_id UUID NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES Restaurant(id) --
 );
@@ -244,6 +252,7 @@ CREATE TABLE Tab (
     discount DECIMAL(8, 2) NOT NULL,
     calculated_tax DECIMAL(8, 2),
     total_tip DECIMAL(8, 2),
+    time_completed TIMESTAMPTZ,
     tab_status VARCHAR(255),
     FOREIGN KEY (tab_status) REFERENCES Tab_status(status), --
     server_restaurant_employee_id UUID NOT NULL,

@@ -19,6 +19,9 @@ export class RestaurantInterface extends DatabaseObject {
         public kitchen_permission: boolean,
         public shift_permission: boolean,
         public time_created: Date = new Date(),
+        public last_checkout_instrument_type: string | null = null,
+        public sumup_oauth2_access_token: string | null = null,
+        public sumup_oauth2_refresh_token: string | null = null,
         public link_code: string | null = null,
         public token_code: string | null = null,
         public id: string | undefined = undefined,
@@ -32,6 +35,9 @@ export class RestaurantInterface extends DatabaseObject {
             kitchen_permission,
             shift_permission,
             time_created,
+            last_checkout_instrument_type,
+            sumup_oauth2_access_token,
+            sumup_oauth2_refresh_token,
             token_code,
             link_code
         };

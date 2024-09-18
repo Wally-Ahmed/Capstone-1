@@ -35,6 +35,9 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
     const [selectedMenu, setSelectedMenu] = useState<fullMenu | null>(null);
     const [selectedTab, setSelectedTab] = useState<fullTab | null>(null);
     const [employeeCode, setEmployeeCodeValue] = useState<string>('');
+
+    const [checkoutMethods, setCheckoutMethods] = useState<any[] | null>(null);
+
     const [newTabForm, setNewTabForm] = useState({
         customer_name: '',
         employee_code: '',
@@ -76,6 +79,60 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
             router.refresh()
         }
     };
+
+    const getCheckoutMethods = async (): Promise<void> => {
+        try {
+            const res = await fetch(`${backendURL}interface/tab/checkout-method`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': jwt
+                },
+            });
+
+            // setShowLoadingSpinner(false)
+            if (res.ok) {
+                const data: { methods: any[] } = await res.json()
+                console.log(data)
+                setCheckoutMethods(data.methods)
+            }
+        } catch (error) {
+            console.log(error);
+            router.refresh()
+        }
+    }
+
+    const addSumUpSoloPayment = async (): Promise<void> => {
+
+        console.log('hit')
+        try {
+            const res = await fetch(`${backendURL}interface/tab/verify-sumup`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': jwt
+                },
+            });
+
+            // setShowLoadingSpinner(false)
+            if (!res.ok) { return }
+
+            const data: { verified: boolean } = await res.json()
+            console.log(data)
+
+            if (data.verified) { }
+            else {
+                // remove hardcode
+                router.push(`https://api.sumup.com/authorize?response_type=code&client_id=${'cc_classic_TqEpbtHoGCQQpitG5ozT5avbWXFnk'}&redirect_uri=${'http://localhost:3000/'}&scope=${'user.app-settings transactions.history user.profile_readonly user.profile'}&state=2cFCsY36y95lFHk4`)
+            }
+
+
+
+        } catch (error) {
+            console.log(error);
+            router.refresh()
+        }
+    }
 
     useEffect(() => {
         getTabs()
@@ -259,7 +316,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
         <>
             {
                 selectedTab
-                    ? <TabInfo fullTab={selectedTab} handleCreateNewTicket={handleCreateNewTicket} getTabs={getTabs} selectedMenu={selectedMenu} menus={menus} setSelectedMenu={setSelectedMenu} handleCreateNewTicketItem={handleCreateNewTicketItem} handleProcessTicket={handleProcessTicket} openTabMenu={() => { setSelectedTab(null) }} />
+                    ? <TabInfo fullTab={selectedTab} handleCreateNewTicket={handleCreateNewTicket} getTabs={getTabs} selectedMenu={selectedMenu} menus={menus} setSelectedMenu={setSelectedMenu} handleCreateNewTicketItem={handleCreateNewTicketItem} handleProcessTicket={handleProcessTicket} openTabMenu={() => { setSelectedTab(null) }} getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} />
                     : <TabList tabs={tabs.filter(tab => tab.restaurant_table_id === null)} toggleShowNewTabForm={() => { setShowNewTabForm(!showNewTabForm) }} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
             }
 
