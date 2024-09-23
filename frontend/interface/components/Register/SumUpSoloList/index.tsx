@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { backendURL } from '@/public/config';
-import NewCheckoutInstrumentForm from './NewCheckoutInstrumentForm';
 
 
 
 
-const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, addSumUpSoloPayment, openSelectSumUpSoloList }) => {
+const SumUpSoloList = ({ soloList, handleSelectSolo, closeForm, getAvailableSolos }) => {
 
-    const [showNewCheckoutInstrumentForm, setShowNewCheckoutInstrumentForm] = useState<boolean>(false);
-
-    useEffect(() => {
-        getCheckoutMethods();
-
+    useEffect(() => { getAvailableSolos() }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        , [])
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 pt-5">
@@ -21,7 +16,7 @@ const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, 
 
                 <div className='flex justify-end'>
                     <button className=""
-                        onClick={() => closeCheckoutForm()}
+                        onClick={() => closeForm()}
                     >
                         <svg
                             className="w-7 h-7"
@@ -40,37 +35,34 @@ const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, 
                     </button>
                 </div>
 
+
                 <h2 className="text-2xl font-bold mb-4">{ }</h2>
 
                 {/*  */}
                 <div className="flex">
                     <div>
                         <div className='flex justify-between'>
-                            <h2 className="text-3xl font-bold mb-4">Choose a Checkout Method</h2>
+                            <h2 className="text-3xl font-bold mb-4">Select a new SumUp solo payment instrument</h2>
                         </div>
-
-                        {/* <p className="text-sm">{ticket.comments}</p> */}
                     </div>
 
                 </div>
-
-                {/* <p className='mt-4'><b>Items:</b></p> */}
-
+                {/*  */}
 
                 <div className="space-y-4 h-4/6 overflow-y-auto pb-10" >
+                    {soloList && soloList.map(solo => (
+                        <button className="mt-2 w-full" type="button" onClick={() => { handleSelectSolo(solo.id) }}>
 
-                    <div className="mt-2">
-                        {checkoutMethods && (<>
-                            {checkoutMethods.find(method => method.method === "Cash") && <p className=" w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-gray-50">Cash</p>}
-                            {checkoutMethods.filter(method => method.method !== "Cash").map(method => <p className=" w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-gray-50">{method.method}</p>)}
-                        </>)}
+                            <div key={solo.id} className="mb-4 p-4 border rounded-lg bg-gray-50">
+                                <p><strong>Model:</strong> {solo.device.identifier}</p>
+                                <p>{solo.name}</p>
+                            </div>
 
-                    </div>
+                        </button>
+                    ))}
 
                 </div>
 
-
-                <button type='button' onClick={() => { setShowNewCheckoutInstrumentForm(true) }} className=" w-full h-[50px] flex justify-center items-center p-2 mt-[50px] border rounded-lg bg-gray-50">New Checkout Method</button>
 
 
                 {/* <div className='flex gap-3'>
@@ -89,11 +81,9 @@ const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, 
                 </div> */}
             </div>
 
-            {showNewCheckoutInstrumentForm && <NewCheckoutInstrumentForm closeShowNewCheckoutInstrumentForm={() => { setShowNewCheckoutInstrumentForm(false) }} addSumUpSoloPayment={addSumUpSoloPayment} openSelectSumUpSoloList={openSelectSumUpSoloList} />}
-
 
         </div>
     );
 };
 
-export default CheckoutForm
+export default SumUpSoloList

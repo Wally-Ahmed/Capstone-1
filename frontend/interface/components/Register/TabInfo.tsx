@@ -11,6 +11,7 @@ interface TabInfoProps {
     getTabs: () => Promise<{ tabs: fullTab[], menus: fullMenu[] }>;
     handleCreateNewTicketItem: (itemId: string) => Promise<void>;
     addSumUpSoloPayment: () => Promise<void>;
+    openSelectSumUpSoloList: () => Promise<void>;
     getCheckoutMethods: () => Promise<void>;
     fullTab: fullTab;
     menus: fullMenu[];
@@ -22,7 +23,7 @@ interface TabInfoProps {
     checkoutMethods: any[];
 }
 
-const TabInfo: React.FC<TabInfoProps> = ({ fullTab, getTabs, handleCreateNewTicket, menus, selectedMenu, setSelectedMenu, handleCreateNewTicketItem, handleProcessTicket, openTabMenu, getCheckoutMethods, checkoutMethods, addSumUpSoloPayment }) => {
+const TabInfo: React.FC<TabInfoProps> = ({ fullTab, getTabs, handleCreateNewTicket, menus, selectedMenu, setSelectedMenu, handleCreateNewTicketItem, handleProcessTicket, openTabMenu, getCheckoutMethods, checkoutMethods, addSumUpSoloPayment, openSelectSumUpSoloList }) => {
 
     const [showCheckoutForm, setShowCheckoutForm] = useState(false);
     const [showTicketConfim, setShowTicketConfirm] = useState(false);
@@ -114,7 +115,7 @@ const TabInfo: React.FC<TabInfoProps> = ({ fullTab, getTabs, handleCreateNewTick
 
             {activeTicket && <Ticketdetail ticket={fullTab.tickets.find(ticket => ticket.status === null)} handleOpenSelectItem={() => { setSelectItemView(true) }} setShowTicketConfirm={setShowTicketConfirm} />}
             {showTicketConfim && <TicketSubmitConfirm closeShowTicketSubmitConfirm={() => { setShowTicketConfirm(false) }} handleProcessTicket={handleProcessTicket} />}
-            {showCheckoutForm && <CheckoutForm getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} closeCheckoutForm={() => { setShowCheckoutForm(false) }} />}
+            {showCheckoutForm && <CheckoutForm getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} closeCheckoutForm={() => { setShowCheckoutForm(false) }} openSelectSumUpSoloList={openSelectSumUpSoloList} />}
         </div>
     );
 };

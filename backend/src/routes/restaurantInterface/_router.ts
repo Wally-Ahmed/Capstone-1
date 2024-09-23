@@ -25,8 +25,8 @@ router.use('/shift', shiftRoutes);
 router.use('/kitchen', kitchenViewRoutes);
 
 
-router.use('/tab', checkoutRoutes);
 router.use('/tab', tabIORoutes);
+router.use('/tab/checkout', checkoutRoutes);
 router.use('/tablemap', tablemapIORoutes);
 router.use('/tablemap', reservationIORoutes);
 router.use('/shift', shiftIORoutes);

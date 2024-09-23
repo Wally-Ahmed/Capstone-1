@@ -35,9 +35,6 @@ CREATE TABLE Ticket_status (
     status VARCHAR(255) PRIMARY KEY
 ); -- in-progress, completed
 
-CREATE TABLE Checkout_instrument_type (
-    instrument_type VARCHAR(255) PRIMARY KEY
-); -- SumUp-Solo
 
 
 -- Restaurant Info
@@ -90,8 +87,9 @@ CREATE TABLE Restaurant_interface (
     shift_permission BOOLEAN NOT NULL,
     sumup_oauth2_access_token TEXT,
     sumup_oauth2_refresh_token TEXT,
-    last_checkout_instrument_type VARCHAR(255),
-    FOREIGN KEY (last_checkout_instrument_type) REFERENCES Checkout_instrument_type(instrument_type),
+    sumup_oauth2_code TEXT,
+    sumup_solo_id TEXT,
+    sumup_merchant_code TEXT,
     restaurant_id UUID NOT NULL,
     FOREIGN KEY (restaurant_id) REFERENCES Restaurant(id) --
 );

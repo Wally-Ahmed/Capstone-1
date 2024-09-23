@@ -252,10 +252,10 @@ export class Restaurant extends DatabaseObject {
     async getRestaurantInterfaces(): Promise<RestaurantInterface[]> {
         try {
             // Query the MenuSection table for menuSection belonging to this Menu
-            const res = await db.query('SELECT id, interface_name, link_code, tablemap_permission, tab_permission, kitchen_permission, shift_permission FROM Restaurant_Interface WHERE restaurant_id = $1', [this.id]);
+            const res = await db.query('SELECT * FROM Restaurant_Interface WHERE restaurant_id = $1', [this.id]);
 
             // Map over the resulting rows and turn each one into a new MenuSection instance
-            const RestaurantInterfaces: RestaurantInterface[] = res.rows.map((row: RestaurantInterfaceProperties) => new RestaurantInterface(this.id as string, row.interface_name, row.tablemap_permission, row.tab_permission, row.kitchen_permission, row.shift_permission, row.time_created, row.link_code, row.token_code, row.id));
+            const RestaurantInterfaces: RestaurantInterface[] = res.rows.map((row: RestaurantInterfaceProperties) => new RestaurantInterface(row.restaurant_id, row.interface_name, row.tablemap_permission, row.tab_permission, row.kitchen_permission, row.shift_permission, row.time_created, row.sumup_merchant_code, row.sumup_solo_id, row.sumup_oauth2_access_token, row.sumup_oauth2_refresh_token, row.sumup_oauth2_code, row.link_code, row.token_code, row.id));
             return RestaurantInterfaces;
         } catch (err) {
             throw err;

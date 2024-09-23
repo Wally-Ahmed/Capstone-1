@@ -39,7 +39,9 @@ export interface RestaurantInterfaceProperties extends DatabaseObjectProperties 
     token_code: string | null;
     sumup_oauth2_access_token: string | null;
     sumup_oauth2_refresh_token: string | null;
-    last_checkout_instrument_type: string | null;
+    sumup_oauth2_code: string | null;
+    sumup_solo_id: string | null;
+    sumup_merchant_code: Date | null;
     restaurant_id: string;
     tablemap_permission: boolean;
     tab_permission: boolean;
