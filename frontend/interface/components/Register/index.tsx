@@ -17,6 +17,8 @@ import SumUpSoloList from './SumUpSoloList';
 
 
 
+
+
 export interface TicketDetailProps {
     jwt: string;
 }
