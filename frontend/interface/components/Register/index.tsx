@@ -11,12 +11,12 @@ import { TabList } from './TabList';
 import NewTabForm from './NewTabForm';
 import TabInfo from './TabInfo';
 import { fullMenu, fullTab } from './types';
-import LinkSumUpSoloForm from './LinkSumUpSoloForm';
-import SumUpSoloList from './SumUpSoloList';
 // import { Grid } from "./Grid";
 
 
 
+import LinkSumUpSoloForm from './LinkSumUpSoloForm';
+import SumUpSoloList from './SumUpSoloList';
 
 
 export interface TicketDetailProps {
