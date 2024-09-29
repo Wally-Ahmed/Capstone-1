@@ -127,7 +127,7 @@ router.route('/sumup/verify-sumup')
 
             const user = await restaurantInterface.attemptGetSumUpProfile() as Record<string, any>;
 
-            restaurantInterface.sumup_merchant_code = user.merchant_code
+            if (user) { restaurantInterface.sumup_merchant_code = user.merchant_code }
             await restaurantInterface.save()
 
             return res.status(200).json({ verified: user ? true : false });
