@@ -536,11 +536,12 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
         });
     };
 
-    if (!layout) {
-        return <LoadingSpinner />;
-    } else if (noLayout) {
+    if (noLayout) {
         return <h1>A layout is not active for this restaurant</h1>
-    };
+    }
+    else if (!layout) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <>
