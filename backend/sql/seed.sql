@@ -18,6 +18,3 @@ INSERT INTO Tab_status (status) VALUES ('open'), ('resolved');
 
 -- Populate Ticket_status
 INSERT INTO Ticket_status (status) VALUES ('in-progress'), ('completed');
-
--- Populate Checkout_instrument_type
-INSERT INTO Checkout_instrument_type (instrument_type) VALUES ('SumUp-Solo');

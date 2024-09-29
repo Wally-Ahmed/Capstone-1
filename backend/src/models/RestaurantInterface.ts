@@ -7,6 +7,8 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { oauth2SumUpClientId, oauth2SumUpClientSecret, secretKey } from '../config';
 import { access } from 'fs';
+import { Tab } from './Tab';
+import { Restaurant } from './Restaurant';
 
 export class RestaurantInterface extends DatabaseObject {
 
@@ -206,7 +208,7 @@ export class RestaurantInterface extends DatabaseObject {
 
 
         return await this.attemptSumUpOauthAction(async (access_token) => {
-            const res = await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers`, {
+            return await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -214,23 +216,54 @@ export class RestaurantInterface extends DatabaseObject {
                 },
                 body: JSON.stringify({ pairing_code: apiCode })
             });
-            return res
+        });
+    }
+
+    async attemptRemoveSumUpSolo(soloId: string): Promise<Record<string, any> | null> {
+        return await this.attemptSumUpOauthAction(async (access_token) => {
+            return await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers/${soloId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${access_token}`
+                },
+            });
         });
     }
 
     async attemptGetAllSumUpSolos(): Promise<Record<string, any> | null> {
-
-
         return await this.attemptSumUpOauthAction(async (access_token) => {
-            const res = await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers`, {
+            return await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${access_token}`
                 },
             });
+        });
+    }
 
-            return res
+    async attemptInitiateSumUpSoloTransaction(tab: Tab): Promise<Record<string, any> | null> {
+        const restaurant = await Restaurant.findById(tab.restaurant_id) as Restaurant
+        console.log(((await tab.getSubTotalPrice()) * 100))
+        return await this.attemptSumUpOauthAction(async (access_token) => {
+            return await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers/${this.sumup_solo_id}/checkout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${access_token}`
+                },
+                body: JSON.stringify({
+                    total_amount: {
+                        "currency": "USD",
+                        "minor_unit": 2,
+                        "value": Math.floor((await tab.getSubTotalPrice()) * 100)
+                    },
+                    tip_rates: [0.18, 0.20, 0.25],
+                    description: `${restaurant.restaurant_name}: ${restaurant.restaurant_address}. ${new Date().toLocaleString()}.`,
+                    // return_url: `${window.location.origin}/sumup/sumup-solo/process-checkout`
+                })
+            });
         });
     }
 

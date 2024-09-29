@@ -5,13 +5,10 @@ import NewCheckoutInstrumentForm from './NewCheckoutInstrumentForm';
 
 
 
-const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, addSumUpSoloPayment, openSelectSumUpSoloList }) => {
-
-    const [showNewCheckoutInstrumentForm, setShowNewCheckoutInstrumentForm] = useState<boolean>(false);
+const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, addSumUpSoloPayment, openSelectSumUpSoloList, showNewCheckoutInstrumentForm, setShowNewCheckoutInstrumentForm, handleCheckOutCash, handleCheckOutSumUpSolo }) => {
 
     useEffect(() => {
         getCheckoutMethods();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -61,8 +58,8 @@ const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, 
 
                     <div className="mt-2">
                         {checkoutMethods && (<>
-                            {checkoutMethods.find(method => method.method === "Cash") && <p className=" w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-gray-50">Cash</p>}
-                            {checkoutMethods.filter(method => method.method !== "Cash").map(method => <p className=" w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-gray-50">{method.method}</p>)}
+                            {checkoutMethods.find(method => method.method === "Cash") && <button type="button" onClick={() => handleCheckOutCash()} className="mt-3 w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-green-400">Cash</button>}
+                            {checkoutMethods.find(method => method.method === "SumUp-Solo") && <button type="button" onClick={() => handleCheckOutSumUpSolo()} className="mt-3 w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-blue-500">SumUp-Solo</button>}
                         </>)}
 
                     </div>
@@ -72,21 +69,6 @@ const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, 
 
                 <button type='button' onClick={() => { setShowNewCheckoutInstrumentForm(true) }} className=" w-full h-[50px] flex justify-center items-center p-2 mt-[50px] border rounded-lg bg-gray-50">New Checkout Method</button>
 
-
-                {/* <div className='flex gap-3'>
-                    <div
-                        onClick={() => { handleOpenSelectItem(true) }}
-                        className="flex items-center justify-center w-full h-20 p-4 bg-white border border-gray-300 rounded shadow-md cursor-pointer hover:shadow-xl transition-shadow duration-300 ease-in-out"
-                    >
-                        Add items to ticket
-                    </div>
-                    <div
-                        onClick={() => { setShowTicketConfirm(true) }}
-                        className="flex items-center justify-center w-full h-20 p-4 bg-blue-500 border border-gray-300 rounded shadow-md cursor-pointer hover:shadow-xl transition-shadow duration-300 ease-in-out"
-                    >
-                        Process ticket
-                    </div>
-                </div> */}
             </div>
 
             {showNewCheckoutInstrumentForm && <NewCheckoutInstrumentForm closeShowNewCheckoutInstrumentForm={() => { setShowNewCheckoutInstrumentForm(false) }} addSumUpSoloPayment={addSumUpSoloPayment} openSelectSumUpSoloList={openSelectSumUpSoloList} />}

@@ -21,9 +21,13 @@ interface TabInfoProps {
     handleCreateNewTicket: () => void;
     setSelectedMenu: Dispatch<SetStateAction<fullMenu>>;
     checkoutMethods: any[];
+    showNewCheckoutInstrumentForm: boolean;
+    setShowNewCheckoutInstrumentForm: React.Dispatch<React.SetStateAction<boolean>>;
+    handleCheckOutCash: () => Promise<void>;
+    handleCheckOutSumUpSolo: () => Promise<void>;
 }
 
-const TabInfo: React.FC<TabInfoProps> = ({ fullTab, getTabs, handleCreateNewTicket, menus, selectedMenu, setSelectedMenu, handleCreateNewTicketItem, handleProcessTicket, openTabMenu, getCheckoutMethods, checkoutMethods, addSumUpSoloPayment, openSelectSumUpSoloList }) => {
+const TabInfo: React.FC<TabInfoProps> = ({ fullTab, getTabs, handleCreateNewTicket, menus, selectedMenu, setSelectedMenu, handleCreateNewTicketItem, handleProcessTicket, openTabMenu, getCheckoutMethods, checkoutMethods, addSumUpSoloPayment, openSelectSumUpSoloList, showNewCheckoutInstrumentForm, setShowNewCheckoutInstrumentForm, handleCheckOutCash, handleCheckOutSumUpSolo }) => {
 
     const [showCheckoutForm, setShowCheckoutForm] = useState(false);
     const [showTicketConfim, setShowTicketConfirm] = useState(false);
@@ -115,7 +119,7 @@ const TabInfo: React.FC<TabInfoProps> = ({ fullTab, getTabs, handleCreateNewTick
 
             {activeTicket && <Ticketdetail ticket={fullTab.tickets.find(ticket => ticket.status === null)} handleOpenSelectItem={() => { setSelectItemView(true) }} setShowTicketConfirm={setShowTicketConfirm} />}
             {showTicketConfim && <TicketSubmitConfirm closeShowTicketSubmitConfirm={() => { setShowTicketConfirm(false) }} handleProcessTicket={handleProcessTicket} />}
-            {showCheckoutForm && <CheckoutForm getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} closeCheckoutForm={() => { setShowCheckoutForm(false) }} openSelectSumUpSoloList={openSelectSumUpSoloList} />}
+            {showCheckoutForm && <CheckoutForm getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} closeCheckoutForm={() => { setShowCheckoutForm(false) }} openSelectSumUpSoloList={openSelectSumUpSoloList} showNewCheckoutInstrumentForm={showNewCheckoutInstrumentForm} setShowNewCheckoutInstrumentForm={setShowNewCheckoutInstrumentForm} handleCheckOutCash={handleCheckOutCash} handleCheckOutSumUpSolo={handleCheckOutSumUpSolo} />}
         </div>
     );
 };

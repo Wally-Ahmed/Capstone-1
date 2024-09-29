@@ -3,7 +3,7 @@ import { useState } from "react"
 export default function LinkSumUpSoloForm({ handleLinkSolo, closeLinkSumUpSoloForm }) {
     const [code, setCode] = useState('')
     const handleNewTabFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCode(event.target.value);
+        setCode(event.target.value.toLocaleUpperCase());
     };
 
     return (
@@ -18,7 +18,7 @@ export default function LinkSumUpSoloForm({ handleLinkSolo, closeLinkSumUpSoloFo
                         <input
                             type="text"
                             value={code}
-                            maxLength={9}
+                            maxLength={12}
                             onChange={handleNewTabFormChange}
                             className="w-full p-2 border border-gray-300 rounded"
                         />

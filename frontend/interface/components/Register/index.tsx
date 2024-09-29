@@ -19,12 +19,12 @@ import LinkSumUpSoloForm from './LinkSumUpSoloForm';
 import SumUpSoloList from './SumUpSoloList';
 
 
-export interface TicketDetailProps {
+export interface RegisterProps {
     jwt: string;
 }
 
 
-const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
+const Register: React.FC<RegisterProps> = ({ jwt }) => {
 
     const router = useRouter();
 
@@ -44,6 +44,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
     const [showLinkSumUpSoloForm, setShowLinkSumUpSoloForm] = useState<boolean>(false);
     const [showSelectSumUpSolo, setShowSelectSumUpSolo] = useState<boolean>(false);
+    const [showNewCheckoutInstrumentForm, setShowNewCheckoutInstrumentForm] = useState<boolean>(false);
 
     const [availableSumUpSolos, setAvailableSumUpSolos] = useState<({ id: string, device: { identifier } }[] | null)>(null)
 
@@ -265,6 +266,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
     const getCheckoutMethods = async (): Promise<void> => {
         try {
+            setShowLoadingSpinner(true)
             const res = await fetch(`${backendURL}interface/tab/checkout/methods`, {
                 method: 'GET',
                 headers: {
@@ -273,7 +275,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
                 },
             });
 
-            // setShowLoadingSpinner(false)
+            setShowLoadingSpinner(false)
             if (res.ok) {
                 const data: { methods: any[] } = await res.json()
                 console.log(data)
@@ -287,7 +289,8 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
     const getAvailableSolos = async (): Promise<void> => {
         try {
-            const res = await fetch(`${backendURL}interface/tab/checkout/sumup/available-solo`, {
+            setShowLoadingSpinner(true)
+            const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -295,7 +298,7 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
                 },
             });
 
-            // setShowLoadingSpinner(false)
+            setShowLoadingSpinner(false)
             if (res.ok) {
                 const data: { solos: any[] } = await res.json()
                 console.log(data)
@@ -371,11 +374,11 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
     const handleLinkSolo = async (code: string) => {
 
-        // setShowLoadingSpinner(true);
+        setShowLoadingSpinner(true);
 
         await new Promise((resolve) => setTimeout(resolve, 200));
 
-        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/link-solo`, {
+        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -386,8 +389,11 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
         if (res.ok) {
             setShowLinkSumUpSoloForm(false);
+            setShowNewCheckoutInstrumentForm(false);
             console.log(await res.json());
+            await getCheckoutMethods()
         };
+        setShowLoadingSpinner(false)
 
         await getTabs()
 
@@ -400,8 +406,8 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
         await new Promise((resolve) => setTimeout(resolve, 200));
 
-        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/select-solo`, {
-            method: 'POST',
+        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': jwt
@@ -409,17 +415,99 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
             body: JSON.stringify({ soloId: soloId })
         });
 
-        setShowSelectSumUpSolo(false);
         setShowLoadingSpinner(false);
         if (res.ok) {
             console.log(await res.json());
+            setShowSelectSumUpSolo(false);
+
+            setShowNewCheckoutInstrumentForm(false);
         }
 
         await getTabs()
 
     };
 
+    const handleDeleteSumUpSoloInstrument = async (soloId: string) => {
 
+        setShowLoadingSpinner(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': jwt
+            },
+            body: JSON.stringify({ soloId: soloId })
+        });
+
+        if (res.ok) {
+            setShowSelectSumUpSolo(false);
+            setShowNewCheckoutInstrumentForm(false);
+
+            await getCheckoutMethods()
+        }
+        setShowLoadingSpinner(false);
+
+        await getTabs()
+
+    };
+
+    const handleCheckOutCash = async () => {
+
+        setShowLoadingSpinner(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        const res = await fetch(`${backendURL}interface/tab/checkout/process-checkout/cash`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': jwt
+            },
+            body: JSON.stringify({ tabId: selectedTab.id })
+        });
+
+        setShowLoadingSpinner(false);
+        if (res.ok) {
+            alert('Transaction Successful')
+            router.push('/app/tabs');
+        } else {
+            alert('Transaction Failed')
+        };
+
+        await getTabs();
+
+    };
+
+    const handleCheckOutSumUpSolo = async () => {
+
+        setShowLoadingSpinner(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo/initiate-checkout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': jwt
+            },
+            body: JSON.stringify({ tabId: selectedTab.id })
+        });
+
+        setShowLoadingSpinner(false);
+        if (res.ok) {
+            console.log(await res.json())
+            alert('Transaction Successful')
+            router.push('/app/tabs');
+        } else {
+            alert('Failed to initiate transaction. Please make sure device is turned on, connected, and is not proccessing another transaction.')
+        };
+
+        await getTabs();
+
+    };
 
     if (!tabs) {
         return <LoadingSpinner />;
@@ -429,13 +517,13 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
         <>
             {
                 selectedTab
-                    ? <TabInfo fullTab={selectedTab} handleCreateNewTicket={handleCreateNewTicket} getTabs={getTabs} selectedMenu={selectedMenu} menus={menus} setSelectedMenu={setSelectedMenu} handleCreateNewTicketItem={handleCreateNewTicketItem} handleProcessTicket={handleProcessTicket} openTabMenu={() => { setSelectedTab(null) }} getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} openSelectSumUpSoloList={openSelectSumUpSoloList} />
+                    ? <TabInfo fullTab={selectedTab} handleCreateNewTicket={handleCreateNewTicket} getTabs={getTabs} selectedMenu={selectedMenu} menus={menus} setSelectedMenu={setSelectedMenu} handleCreateNewTicketItem={handleCreateNewTicketItem} handleProcessTicket={handleProcessTicket} openTabMenu={() => { setSelectedTab(null) }} getCheckoutMethods={getCheckoutMethods} checkoutMethods={checkoutMethods} addSumUpSoloPayment={addSumUpSoloPayment} openSelectSumUpSoloList={openSelectSumUpSoloList} showNewCheckoutInstrumentForm={showNewCheckoutInstrumentForm} setShowNewCheckoutInstrumentForm={setShowNewCheckoutInstrumentForm} handleCheckOutCash={handleCheckOutCash} handleCheckOutSumUpSolo={handleCheckOutSumUpSolo} />
                     : <TabList tabs={tabs.filter(tab => tab.restaurant_table_id === null)} toggleShowNewTabForm={() => { setShowNewTabForm(!showNewTabForm) }} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
             }
 
             {showNewTabForm && <NewTabForm newTabForm={newTabForm} handleCreateNewTab={handleCreateNewTab} handleNewTabFormChange={handleNewTabFormChange} toggleShowNewTabForm={() => { setShowNewTabForm(!showNewTabForm) }} />}
             {showLinkSumUpSoloForm && <LinkSumUpSoloForm handleLinkSolo={handleLinkSolo} closeLinkSumUpSoloForm={() => { setShowLinkSumUpSoloForm(false) }} />}
-            {showSelectSumUpSolo && <SumUpSoloList soloList={availableSumUpSolos} closeForm={() => { setShowSelectSumUpSolo(false) }} handleSelectSolo={handleSelectSolo} getAvailableSolos={getAvailableSolos} />}
+            {showSelectSumUpSolo && <SumUpSoloList soloList={availableSumUpSolos} closeForm={() => { setShowSelectSumUpSolo(false) }} handleSelectSolo={handleSelectSolo} getAvailableSolos={getAvailableSolos} handleDeleteSumUpSoloInstrument={handleDeleteSumUpSoloInstrument} />}
             {showLoadingSpinner && <LoadingSpinner />}
         </>
     );
@@ -443,4 +531,4 @@ const TicketDetail: React.FC<TicketDetailProps> = ({ jwt }) => {
 
 
 
-export default TicketDetail;
+export default Register;

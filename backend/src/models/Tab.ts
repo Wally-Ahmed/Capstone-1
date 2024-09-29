@@ -138,6 +138,12 @@ export class Tab extends DatabaseObject {
         };
     };
 
+    async getSubTotalPrice(): Promise<number> {
+        const res = await db.query('SELECT ticket_item.price FROM ticket_item JOIN ticket ON ticket_item.ticket_id = ticket.id JOIN tab ON ticket.tab_id = tab.id WHERE tab.id = $1', [this.id]);
+        const sum: number = res.rows.reduce((sum: number, item: { price: number }) => sum + item.price, 0);
+        return sum;
+    };
+
 }
 
 module.exports = {

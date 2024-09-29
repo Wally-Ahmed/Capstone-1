@@ -4,7 +4,7 @@ import { backendURL } from '@/public/config';
 
 
 
-const SumUpSoloList = ({ soloList, handleSelectSolo, closeForm, getAvailableSolos }) => {
+const SumUpSoloList = ({ soloList, handleSelectSolo, closeForm, getAvailableSolos, handleDeleteSumUpSoloInstrument }) => {
 
     useEffect(() => { getAvailableSolos() }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,34 +51,41 @@ const SumUpSoloList = ({ soloList, handleSelectSolo, closeForm, getAvailableSolo
 
                 <div className="space-y-4 h-4/6 overflow-y-auto pb-10" >
                     {soloList && soloList.map(solo => (
-                        <button className="mt-2 w-full" type="button" onClick={() => { handleSelectSolo(solo.id) }}>
+                        <div key={solo.id} className="relative">
+                            <button className="mt-2 w-full" type="button" onClick={() => handleSelectSolo(solo.id)}>
+                                <div key={solo.id} className="mb-4 p-4 border rounded-lg bg-gray-50">
+                                    <p><strong>Model:</strong> {solo.device.identifier}</p>
+                                    <p>{solo.name}</p>
+                                </div>
+                            </button>
 
-                            <div key={solo.id} className="mb-4 p-4 border rounded-lg bg-gray-50">
-                                <p><strong>Model:</strong> {solo.device.identifier}</p>
-                                <p>{solo.name}</p>
+                            <div className="absolute top-1/2 right-0 -translate-y-1/2 transform flex space-x-0">
+                                <button
+                                    onClick={() => handleDeleteSumUpSoloInstrument(solo.id)}
+                                    className="p-1 text-black rounded"
+                                >
+                                    <svg
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        viewBox="5 5 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        ></path>
+                                    </svg>
+                                </button>
                             </div>
-
-                        </button>
+                        </div>
                     ))}
 
                 </div>
 
 
-
-                {/* <div className='flex gap-3'>
-                    <div
-                        onClick={() => { handleOpenSelectItem(true) }}
-                        className="flex items-center justify-center w-full h-20 p-4 bg-white border border-gray-300 rounded shadow-md cursor-pointer hover:shadow-xl transition-shadow duration-300 ease-in-out"
-                    >
-                        Add items to ticket
-                    </div>
-                    <div
-                        onClick={() => { setShowTicketConfirm(true) }}
-                        className="flex items-center justify-center w-full h-20 p-4 bg-blue-500 border border-gray-300 rounded shadow-md cursor-pointer hover:shadow-xl transition-shadow duration-300 ease-in-out"
-                    >
-                        Process ticket
-                    </div>
-                </div> */}
             </div>
 
 
