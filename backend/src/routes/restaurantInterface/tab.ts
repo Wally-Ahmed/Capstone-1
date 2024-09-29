@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { tabNsp } from '../../__utilities__/app';
+import { io } from '../../__utilities__/app';
 import { Employee } from '../../models/Employee';
 import { ActiveShiftProperties, Shift } from '../../models/Shift';
 import { TipPool } from '../../models/TipPool';
@@ -56,12 +56,12 @@ router.route('/')
             await tab.save();
 
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.status(201).json({ tab });
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     });
@@ -85,12 +85,12 @@ router.route('/:tab_id/')
 
             await tab.delete();
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     })
@@ -119,11 +119,11 @@ router.route('/:tab_id/ticket/')
             await ticket.save();
 
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             return res.sendStatus(200);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     });
@@ -161,12 +161,12 @@ router.route('/:tab_id/ticket/:ticket_id/')
             await ticket.save();
 
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     })
@@ -186,12 +186,12 @@ router.route('/:tab_id/ticket/:ticket_id/')
             await ticket.delete();
 
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     });
@@ -229,12 +229,12 @@ router.route('/:tab_id/ticket/:ticket_id/item/')
 
             await item.save();
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.sendStatus(201);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     });
@@ -277,12 +277,12 @@ router.route('/:tab_id/ticket/:ticket_id/item/:item_id')
 
             await item.save();
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     })
@@ -326,12 +326,12 @@ router.route('/:tab_id/ticket/:ticket_id/item/:item_id')
 
             await item.delete();
 
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            tabNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     });

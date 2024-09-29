@@ -33,17 +33,8 @@ export const io = new Server(server, {
         origin: interfaceURL.slice(0, -1),
         methods: ['GET', 'POST']
     }
-});
-
-
-// io.on("connection", (socket) => {
-//     console.log(`User connected: ${socket.id}`)
-// })
-
-
-
-export const tablemapNsp = io.of('/tablemap');
-tablemapNsp.use(async (socket: InterfaceSocket, next) => {
+})
+io.use(async (socket: InterfaceSocket, next) => {
 
     const token = socket.handshake.auth.token;
     try {
@@ -53,7 +44,6 @@ tablemapNsp.use(async (socket: InterfaceSocket, next) => {
 
 
         const decoded: any = jwt.verify(token, secretKey);
-
 
         // Check if decoded is an object and has the 'id' properties
         if (!decoded) {
@@ -73,154 +63,11 @@ tablemapNsp.use(async (socket: InterfaceSocket, next) => {
         next(new Error('Invalid JWT'));
     }
 })
-tablemapNsp.use(async (socket: InterfaceSocket, next) => {
-    try {
-        const user = socket.user as RestaurantInterface;
-        if (!user.tablemap_permission) { throw new Error() }
-        next()
-    } catch (err) {
-        next(new UnauthorizedError('This interface does not have tablemap permissions'));
-    };
-});
-tablemapNsp.on('connection', (socket: InterfaceSocket) => {
+io.on('connection', (socket: InterfaceSocket) => {
     const user = socket.user as RestaurantInterface;
     socket.join(user.restaurant_id as string);
 })
 
-export const kitchenNsp = io.of('/kitchen');
-kitchenNsp.use(async (socket: InterfaceSocket, next) => {
-
-    const token = socket.handshake.auth.token;
-    try {
-        if (!token) { throw new UnauthorizedError('No token provided') };
-        const { user: restaurantInterface }: { user: RestaurantInterface } = await RestaurantInterface.authorize(token);
-        if (!restaurantInterface) { throw new UnauthorizedError('Invalid Token') };
-
-
-        const decoded: any = jwt.verify(token, secretKey);
-
-
-        // Check if decoded is an object and has the 'id' properties
-        if (!decoded) {
-            throw new UnauthorizedError('Invalid token');
-        }
-        const user = await RestaurantInterface.findById(decoded.id) as RestaurantInterface | null;
-        if (user === null) {
-            throw new UnauthorizedError('Invalid or expired token');
-        }
-        if (decoded.code !== user.token_code) {
-            throw new UnauthorizedError('Invalid token');
-        }
-
-        socket.user = user;
-        next();
-    } catch (err) {
-        next(new Error('Invalid JWT'));
-    }
-})
-kitchenNsp.use(async (socket: InterfaceSocket, next) => {
-    try {
-        const user = socket.user as RestaurantInterface;
-        if (!user.kitchen_permission) { throw new Error() }
-        next()
-    } catch (err) {
-        next(new UnauthorizedError('This interface does not have tablemap permissions'));
-    };
-});
-kitchenNsp.on('connection', (socket: InterfaceSocket) => {
-    const user = socket.user as RestaurantInterface;
-    socket.join(user.restaurant_id as string);
-})
-
-export const shiftNsp = io.of('/shift');
-shiftNsp.use(async (socket: InterfaceSocket, next) => {
-
-    const token = socket.handshake.auth.token;
-    try {
-        if (!token) { throw new UnauthorizedError('No token provided') };
-        const { user: restaurantInterface }: { user: RestaurantInterface } = await RestaurantInterface.authorize(token);
-        if (!restaurantInterface) { throw new UnauthorizedError('Invalid Token') };
-
-
-        const decoded: any = jwt.verify(token, secretKey);
-
-
-        // Check if decoded is an object and has the 'id' properties
-        if (!decoded) {
-            throw new UnauthorizedError('Invalid token');
-        }
-        const user = await RestaurantInterface.findById(decoded.id) as RestaurantInterface | null;
-        if (user === null) {
-            throw new UnauthorizedError('Invalid or expired token');
-        }
-        if (decoded.code !== user.token_code) {
-            throw new UnauthorizedError('Invalid token');
-        }
-
-        socket.user = user;
-        next();
-    } catch (err) {
-        next(new Error('Invalid JWT'));
-    }
-})
-shiftNsp.use(async (socket: InterfaceSocket, next) => {
-    try {
-        const user = socket.user as RestaurantInterface;
-        if (!user.shift_permission) { throw new Error() }
-        next()
-    } catch (err) {
-        next(new UnauthorizedError('This interface does not have tablemap permissions'));
-    };
-});
-shiftNsp.on('connection', (socket: InterfaceSocket) => {
-    const user = socket.user as RestaurantInterface;
-    socket.join(user.restaurant_id as string);
-})
-
-export const tabNsp = io.of('/tab');
-tabNsp.use(async (socket: InterfaceSocket, next) => {
-
-    const token = socket.handshake.auth.token;
-    try {
-        if (!token) { throw new UnauthorizedError('No token provided') };
-        const { user: restaurantInterface }: { user: RestaurantInterface } = await RestaurantInterface.authorize(token);
-        if (!restaurantInterface) { throw new UnauthorizedError('Invalid Token') };
-
-
-        const decoded: any = jwt.verify(token, secretKey);
-
-
-        // Check if decoded is an object and has the 'id' properties
-        if (!decoded) {
-            throw new UnauthorizedError('Invalid token');
-        }
-        const user = await RestaurantInterface.findById(decoded.id) as RestaurantInterface | null;
-        if (user === null) {
-            throw new UnauthorizedError('Invalid or expired token');
-        }
-        if (decoded.code !== user.token_code) {
-            throw new UnauthorizedError('Invalid token');
-        }
-
-        socket.user = user;
-        next();
-    } catch (err) {
-        next(new Error('Invalid JWT'));
-    }
-})
-tabNsp.use(async (socket: InterfaceSocket, next) => {
-    try {
-        const user = socket.user as RestaurantInterface;
-        if (!user.tab_permission) { throw new Error() }
-        next()
-    } catch (err) {
-        next(new UnauthorizedError('This interface does not have tablemap permissions'));
-    };
-});
-tabNsp.on('connection', (socket: InterfaceSocket) => {
-    const user = socket.user as RestaurantInterface;
-    socket.join(user.restaurant_id as string);
-})
 
 
 app.use('/Admin', restaurantAdminRouter);

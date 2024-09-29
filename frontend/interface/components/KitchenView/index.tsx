@@ -54,7 +54,6 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
     // const [selectedTicket, setSelectedTicket] = useState<>(null)
 
     const getTickets = async () => {
-        console.log('hitttt')
         try {
             const res = await fetch(`${backendURL}interface/kitchen`, {
                 method: 'GET',
@@ -90,7 +89,7 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
     }, [])
 
 
-    const socket = useSocket(jwt, 'kitchen')
+    const socket = useSocket(jwt)
 
     useEffect(() => {
         socket.on('connect', async () => {
@@ -99,7 +98,7 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
 
         });
 
-        socket.on('update', async () => {
+        socket.on('update-kitchenView', async () => {
             console.log('update')
             await getTickets()
         });

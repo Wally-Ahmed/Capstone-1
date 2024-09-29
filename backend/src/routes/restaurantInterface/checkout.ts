@@ -13,6 +13,7 @@ import connectSumUpOauthSchema from './schemas/connectSumUpOauthSchema';
 import { JSONSchemaType } from 'ajv';
 import linkSumUpSoloSchema from './schemas/linkSumUpSoloSchema';
 import checkoutSchema from './schemas/checkoutSchema';
+import { io } from '../../__utilities__/app';
 
 
 const router = express.Router();
@@ -39,7 +40,7 @@ router.use(express.json());
 
 router.route('/methods')
     .get(authenticateInterface, async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
             const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
@@ -66,7 +67,7 @@ router.route('/methods')
 
 router.route('/process-checkout/cash')
     .post(authenticateInterface, validateSchema(checkoutSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             const { tabId, tipAmount }: { tabId: string, tipAmount: number } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
@@ -79,18 +80,20 @@ router.route('/process-checkout/cash')
             tab.tab_status = "resolved";
             tab.total_tip = tipAmount;
             tab.calculated_tax = 0;
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             await tab.save();
 
             return res.sendStatus(200);
         } catch (err) {
+            io.to(restaurantInterface.restaurant_id as string).emit('update-register');
             next(err);
         };
     })
 
 router.route('/sumup-oauth-login')
     .post(authenticateInterface, validateSchema(connectSumUpOauthSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             const { access_token, refresh_token, code }: { access_token: string, refresh_token: string, code: string } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
@@ -119,7 +122,7 @@ router.route('/sumup-oauth-login')
 
 router.route('/sumup/verify-sumup')
     .get(authenticateInterface, async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
             const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
@@ -138,7 +141,7 @@ router.route('/sumup/verify-sumup')
 
 router.route('/sumup/sumup-solo')
     .get(authenticateInterface, validateSchema(linkSumUpSoloSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
             const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
@@ -153,7 +156,7 @@ router.route('/sumup/sumup-solo')
         };
     })
     .post(authenticateInterface, validateSchema(linkSumUpSoloSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             const { code }: { code: string } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
@@ -172,7 +175,7 @@ router.route('/sumup/sumup-solo')
         };
     })
     .delete(authenticateInterface, validateSchema(linkSumUpSoloSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             const { soloId }: { soloId: string } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
@@ -196,7 +199,7 @@ router.route('/sumup/sumup-solo')
 
 router.route('/sumup/sumup-solo/select')
     .post(authenticateInterface, validateSchema(linkSumUpSoloSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             const { soloId }: { soloId: string } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
@@ -223,7 +226,7 @@ router.route('/sumup/sumup-solo/select')
 
 router.route('/sumup/sumup-solo/initiate-checkout')
     .post(authenticateInterface, validateSchema(checkoutSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface;
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
             const { tabId }: { tabId: string } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
