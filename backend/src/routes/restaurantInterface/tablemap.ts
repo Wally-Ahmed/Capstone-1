@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { tablemapNsp } from '../../__utilities__/app'
+import { io } from '../../__utilities__/app'
 import { validateSchema } from '../../__utilities__/validateSchema';
 import tableSchema from './schemas/tableSchema';
 import { JSONSchemaType } from 'ajv';
@@ -35,11 +35,11 @@ router.route('/table/:table_id/')
             restaurantTable.table_status = table_status;
             await restaurantTable.save();
 
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update')
+            io.to(restaurantInterface.restaurant_id as string).emit('update-tablemap')
 
             return res.sendStatus(200);
         } catch (err) {
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-tablemap');
             next(err);
         };
     });

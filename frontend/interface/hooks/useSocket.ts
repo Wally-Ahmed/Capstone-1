@@ -3,9 +3,9 @@ import { io } from "socket.io-client";
 
 let socket;
 
-export const useSocket = (jwt: string, namespace: 'tablemap' | 'kitchen' | 'shift' | 'tab') => {
+export const useSocket = (jwt: string) => {
     if (!socket) {
-        socket = io(`${backendURL}${namespace}`, { auth: { token: jwt } })
+        socket = io(`${backendURL}`, { auth: { token: jwt } })
     }
     return socket;
 };

@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { shiftNsp } from '../../__utilities__/app';
+import { io } from '../../__utilities__/app';
 import { Employee } from '../../models/Employee';
 import { ActiveShiftProperties, Shift } from '../../models/Shift';
 import { TipPool } from '../../models/TipPool';
@@ -50,12 +50,12 @@ router.route('/')
             await shift.save();
 
 
-            shiftNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-shift');
 
             return res.sendStatus(201);
 
         } catch (err) {
-            shiftNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-shift');
             next(err);
         };
     })
@@ -89,12 +89,12 @@ router.route('/:shift_id/')
             shift.save();
 
 
-            shiftNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-shift');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            shiftNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-shift');
             next(err);
         };
     })

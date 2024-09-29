@@ -220,7 +220,7 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
     }, [layout])
 
 
-    const socket = useSocket(jwt, 'tablemap')
+    const socket = useSocket(jwt)
 
     useEffect(() => {
         socket.on('connect', async () => {
@@ -229,7 +229,7 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
 
         });
 
-        socket.on('update', async () => {
+        socket.on('update-tablemap', async () => {
             console.log('update')
             await getLayout()
         });

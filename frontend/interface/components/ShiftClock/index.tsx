@@ -86,7 +86,7 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
     }, [])
 
 
-    const socket = useSocket(jwt, 'shift')
+    const socket = useSocket(jwt)
 
     useEffect(() => {
         socket.on('connect', async () => {
@@ -95,7 +95,7 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
 
         });
 
-        socket.on('update', async () => {
+        socket.on('update-shift', async () => {
             console.log('update')
             await getShifts()
         });
