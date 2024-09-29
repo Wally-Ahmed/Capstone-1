@@ -49,7 +49,6 @@ router.route('/link')
 
             const token = await restaurantInterface._setToken();
 
-            // console.log('hitterrr1', `${token}`)
             res.status(200).json({ token });
 
         } catch (err) {

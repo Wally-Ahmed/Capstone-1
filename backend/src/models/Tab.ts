@@ -31,6 +31,7 @@ export class Tab extends DatabaseObject {
         public restaurant_id: string,
         public tab_status: string = 'open',
         public discount: number = 0,
+        public time_completed: Date | null = null,
         public calculated_tax: number | null = null,
         public total_tip: number | null = null,
         public id: string | undefined = undefined,
@@ -42,6 +43,7 @@ export class Tab extends DatabaseObject {
             calculated_tax,
             total_tip,
             tab_status,
+            time_completed,
             server_restaurant_employee_id,
             restaurant_table_id,
             restaurant_id,
@@ -104,6 +106,7 @@ export class Tab extends DatabaseObject {
                     calculated_tax: tab.calculated_tax,
                     total_tip: tab.total_tip,
                     tab_status: tab.tab_status,
+                    time_completed: tab.time_completed,
                     server_restaurant_employee_id: tab.server_restaurant_employee_id,
                     restaurant_table_id: tab.restaurant_table_id,
                     restaurant_id: tab.restaurant_id,
@@ -133,6 +136,12 @@ export class Tab extends DatabaseObject {
         } catch (err) {
             throw err;
         };
+    };
+
+    async getSubTotalPrice(): Promise<number> {
+        const res = await db.query('SELECT ticket_item.price FROM ticket_item JOIN ticket ON ticket_item.ticket_id = ticket.id JOIN tab ON ticket.tab_id = tab.id WHERE tab.id = $1', [this.id]);
+        const sum: number = res.rows.reduce((sum: number, item: { price: number }) => sum + item.price, 0);
+        return sum;
     };
 
 }
