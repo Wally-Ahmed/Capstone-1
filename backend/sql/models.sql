@@ -2,7 +2,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Drop existing tables if they exist
-DROP TABLE IF EXISTS Rank_permission, Employment_status, Table_status, Time_zone, Exit_code, Tab_status, Ticket_status, Checkout_instrument_type, Restaurant, Restaurant_interface, Tip_pool, Employee, Restaurant_Employee, Shift, Shift_modification, Layout, Section, Restaurant_table, Reservation, Menu, Menu_section, Menu_item_root, Menu_item_variation, Tab, Ticket, Ticket_item, Delivery_ticket, Delivery_ticket_item CASCADE;
+DROP TABLE IF EXISTS Rank_permission, Employment_status, Table_status, Time_zone, Exit_code, Tab_status, Ticket_status, Restaurant, Restaurant_interface, Tip_pool, Employee, Restaurant_Employee, Shift, Shift_modification, Layout, Section, Restaurant_table, Reservation, Menu, Menu_section, Menu_item_root, Menu_item_variation, Tab, Ticket, Ticket_item, Delivery_ticket, Delivery_ticket_item CASCADE;
 
 -- Dependency Tables
 
