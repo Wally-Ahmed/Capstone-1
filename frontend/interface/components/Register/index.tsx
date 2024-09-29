@@ -121,7 +121,7 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
     }, [tabs])
 
 
-    const socket = useSocket(jwt, 'tab')
+    const socket = useSocket(jwt)
 
     useEffect(() => {
         socket.on('connect', async () => {
@@ -130,7 +130,7 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
 
         });
 
-        socket.on('update', async () => {
+        socket.on('update-register', async () => {
             console.log('update')
             await getTabs()
         });

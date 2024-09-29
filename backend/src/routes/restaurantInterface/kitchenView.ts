@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { kitchenNsp } from '../../__utilities__/app';
+import { io } from '../../__utilities__/app';
 import { Employee } from '../../models/Employee';
 import { Shift } from '../../models/Shift';
 import { TipPool } from '../../models/TipPool';
@@ -42,12 +42,12 @@ router.route('/ticket/:ticket_id/')
             await ticket.save();
 
 
-            kitchenNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitchenView');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            kitchenNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitchenView');
             next(err);
         };
     })

@@ -8,7 +8,7 @@ import { RestaurantInterface } from '../../models/RestaurantInterface';
 import { Restaurant } from '../../models/Restaurant';
 import { RestaurantTable } from '../../models/RestaurantTable';
 import { Reservation } from '../../models/Reservation';
-import { tablemapNsp } from '../../__utilities__/app'
+import { io } from '../../__utilities__/app'
 import { validateSchema } from '../../__utilities__/validateSchema';
 import reservationSchema from './schemas/reservationSchema';
 import { JSONSchemaType } from 'ajv';
@@ -39,12 +39,12 @@ router.route('/reservation/')
             await reservation.save();
 
 
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
 
             return res.sendStatus(201);
 
         } catch (err) {
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
             next(err);
         };
     })
@@ -99,14 +99,14 @@ router.route('/reservation/:reservation_id/')
             await reservation.save();
 
 
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
 
             console.log('pass')
             return res.sendStatus(200);
 
         } catch (err) {
             console.log(err)
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
             next(err);
         };
     })
@@ -123,12 +123,12 @@ router.route('/reservation/:reservation_id/')
             await reservation.delete();
 
 
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
 
             return res.sendStatus(200);
 
         } catch (err) {
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
             next(err);
         };
     })
@@ -151,11 +151,11 @@ router.route('/reservation/:reservation_id/assign')
             reservation.restaurant_table_id = table.id as string;
             await reservation.save();
 
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
 
             return res.sendStatus(200);
         } catch (err) {
-            tablemapNsp.to(restaurantInterface.restaurant_id as string).emit('update');
+            io.to(restaurantInterface.restaurant_id as string).emit('update-kitcheView');
             next(err);
         };
     })
