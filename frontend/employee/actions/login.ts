@@ -1,43 +1,36 @@
+// actions/login.js
+'use server';
+
 import { backendURL } from "@/public/config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-
 export async function login(formData) {
-    'use server';
+    const payload = {
+        employee_email: formData.get('email'),
+        password: formData.get('password'),
+    };
 
+    const res = await fetch(`${backendURL}staff/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    });
 
-    const payload: { [key: string]: string; } = { password: formData.get('password'), employee_email: formData.get('email'), }
+    const data = await res.json();
 
-
-    try {
-        const res = await fetch(`${backendURL}staff/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-
-
-        // Check if the res status is OK (status code 200-299)
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-
-
-        // Parse the res as JSON
-        const data = await res.json();
-
-        cookies().set('token', data.token)
-        console.log('hiiter', data.token)
-
-
-    } catch (error) {
-        console.log(error, ':(')
+    if (!res.ok) {
+        // Extract error message from the response
+        const errorMessage = data.error?.message || data.message || 'Login failed';
+        // Redirect back to the sign-in page with error message
+        redirect(`/signin?error=${encodeURIComponent(errorMessage)}`);
     }
 
-    // Example function to process the form data
+    // Set the token cookie
+    cookies().set('token', data.token);
+
+    // Redirect after successful login
     redirect('/');
 }

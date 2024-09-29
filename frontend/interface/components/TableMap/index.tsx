@@ -537,7 +537,11 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
     };
 
     if (noLayout) {
-        return <h1>A layout is not active for this restaurant</h1>
+        return (<div className="flex items-center justify-center h-screen">
+            <p className="text-black font-bold text-2xl">
+                A layout is not active for this restaurant.
+            </p>
+        </div>)
     }
     else if (!layout) {
         return <LoadingSpinner />;

@@ -261,7 +261,7 @@ export class RestaurantInterface extends DatabaseObject {
                     },
                     tip_rates: [0.18, 0.20, 0.25],
                     description: `${restaurant.restaurant_name}: ${restaurant.restaurant_address}. ${new Date().toLocaleString()}.`,
-                    return_url: `${window.location.origin}/sumup/sumup-solo/process-checkout`
+                    return_url: `${window.location.origin}/interface/tabs/checkout/sumup/sumup-solo/process-checkout`
                 })
             });
         });

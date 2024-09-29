@@ -34,6 +34,10 @@ router.post('/signup', validateSchema(employeeSchema as JSONSchemaType<any>), as
             throw new Error("Password and confirmation password do not match.");
         };
 
+        if (await Employee.findByEmail(employee_email)) {
+            throw new BadRequestError('A user is already using this email.')
+        }
+
 
         const password_hash = await bcrypt.hash(password, 10); // Hash the password
         let user = new Employee(employee_name, employee_email, employee_phone, password_hash,);
