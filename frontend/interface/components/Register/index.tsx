@@ -406,8 +406,8 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
 
         await new Promise((resolve) => setTimeout(resolve, 200));
 
-        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo`, {
-            method: 'PATCH',
+        const res = await fetch(`${backendURL}interface/tab/checkout/sumup/sumup-solo/select`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': jwt
@@ -415,13 +415,12 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
             body: JSON.stringify({ soloId: soloId })
         });
 
-        setShowLoadingSpinner(false);
         if (res.ok) {
-            console.log(await res.json());
             setShowSelectSumUpSolo(false);
-
             setShowNewCheckoutInstrumentForm(false);
+            await getCheckoutMethods()
         }
+        setShowLoadingSpinner(false);
 
         await getTabs()
 
