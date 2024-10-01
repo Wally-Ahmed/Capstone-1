@@ -261,7 +261,7 @@ router.route('/sumup/sumup-solo/process-checkout')
             const { id, payload }: { id: string, payload: { checkout_id: string, reference: string, status: 'PENDING' | 'PAID' | 'FAILED' } } = req.body;
 
 
-            io.emit('transaction');
+            console.log('transaction');
 
             const tab = await Tab.findByTransactionId(id) as Tab;
 
