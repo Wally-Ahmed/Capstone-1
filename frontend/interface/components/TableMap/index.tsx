@@ -238,6 +238,7 @@ const LayoutDetailComponent: React.FC<LayoutDetailComponentProps> = ({ jwt, tabP
             console.log('disconnect')
             router.refresh()
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket]);
 
     useEffect(() => {

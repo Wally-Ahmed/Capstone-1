@@ -104,6 +104,7 @@ const ShiftClock: React.FC<ShiftClockProps> = ({ jwt }) => {
             console.log('disconnect')
             router.refresh()
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket]);
 
 
