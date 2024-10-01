@@ -256,7 +256,7 @@ router.route('/sumup/sumup-solo/initiate-checkout')
 router.use(cors({ origin: '*', optionsSuccessStatus: 200 }))
 
 router.route('/sumup/sumup-solo/process-checkout')
-    .post(authenticateInterface, async (req: Request, res: Response, next: NextFunction) => {
+    .post(async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id, payload }: { id: string, payload: { checkout_id: string, reference: string, status: 'PENDING' | 'PAID' | 'FAILED' } } = req.body;
 
