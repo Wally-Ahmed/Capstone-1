@@ -135,6 +135,10 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
             await getTabs()
         });
 
+        socket.on('transaction', async () => {
+            alert('hit')
+        });
+
         socket.on('disconnect', () => {
             console.log('disconnect')
             router.refresh()

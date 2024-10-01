@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { InterfaceRequest } from '../../__utilities__/requestInterfaces';
+import cors from 'cors'
 
 import { ExpressError, NotFoundError, UnauthorizedError, BadRequestError, ForbiddenError } from '../../__utilities__/expressError';
 import { Tab } from '../../models/Tab';
@@ -247,6 +248,9 @@ router.route('/sumup/sumup-solo/initiate-checkout')
             next(err);
         };
     })
+
+
+router.use(cors({ origin: '8', optionsSuccessStatus: 200 }))
 
 router.route('/sumup/sumup-solo/process-checkout')
     .post(authenticateInterface, validateSchema(checkoutSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
