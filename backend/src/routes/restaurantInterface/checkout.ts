@@ -256,20 +256,19 @@ router.route('/sumup/sumup-solo/initiate-checkout')
 router.use(cors({ origin: '*', optionsSuccessStatus: 200 }))
 
 router.route('/sumup/sumup-solo/process-checkout')
-    .post(authenticateInterface, validateSchema(checkoutSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
-        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
+    .post(authenticateInterface, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id, payload }: { id: string, payload: { checkout_id: string, reference: string, status: 'PENDING' | 'PAID' | 'FAILED' } } = req.body;
-            if (restaurantInterface === undefined) { throw new UnauthorizedError() };
-            const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
-            if (restaurant === null) { throw new UnauthorizedError() };
+
 
             const tab = await Tab.findByTransactionId(id) as Tab;
+
+            const restaurant = await Restaurant.findById(tab.restaurant_id) as Restaurant;
 
             tab.tab_status = "resolved"
             await tab.save();
 
-            io.to(restaurantInterface.restaurant_id as string).emit('transaction');
+            io.emit('transaction');
 
             console.log(req.body)
 
