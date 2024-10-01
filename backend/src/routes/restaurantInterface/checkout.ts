@@ -248,4 +248,33 @@ router.route('/sumup/sumup-solo/initiate-checkout')
         };
     })
 
+router.route('/sumup/sumup-solo/process-checkout')
+    .post(authenticateInterface, validateSchema(checkoutSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
+        const restaurantInterface = req.restaurantInterface as RestaurantInterface;
+        try {
+            const { payload }: { payload: { checkout_id: string, reference: string, status: 'PENDING' | 'PAID' | 'FAILED' } } = req.body;
+            if (restaurantInterface === undefined) { throw new UnauthorizedError() };
+            const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
+            if (restaurant === null) { throw new UnauthorizedError() };
+
+            // const tab = await Tab.findById(tabId) as Tab;
+            // if (!tab) { throw new NotFoundError('Invalid tab id') };
+
+            // const data = await restaurantInterface.attemptInitiateSumUpSoloTransaction(tab);
+            // if (!data) {
+            //     return res.sendStatus(400);
+            // }
+            // else {
+            //     return res.status(200).json({ data });
+            // };
+
+            console.log(req.body)
+
+            return res.sendStatus(200)
+
+        } catch (err) {
+            next(err);
+        };
+    })
+
 export default router;
