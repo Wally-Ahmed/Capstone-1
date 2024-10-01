@@ -81,6 +81,7 @@ router.route('/process-checkout/cash')
             tab.tab_status = "resolved";
             tab.total_tip = tipAmount;
             tab.calculated_tax = 0;
+
             io.to(restaurantInterface.restaurant_id as string).emit('update-register');
 
             await tab.save();
@@ -242,6 +243,8 @@ router.route('/sumup/sumup-solo/initiate-checkout')
                 return res.sendStatus(400);
             }
             else {
+                tab.transaction_id = data.data.client_transaction_id;
+                await tab.save();
                 return res.status(200).json({ data });
             };
         } catch (err) {
@@ -250,27 +253,23 @@ router.route('/sumup/sumup-solo/initiate-checkout')
     })
 
 
-router.use(cors({ origin: '8', optionsSuccessStatus: 200 }))
+router.use(cors({ origin: '*', optionsSuccessStatus: 200 }))
 
 router.route('/sumup/sumup-solo/process-checkout')
     .post(authenticateInterface, validateSchema(checkoutSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
         const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
-            const { payload }: { payload: { checkout_id: string, reference: string, status: 'PENDING' | 'PAID' | 'FAILED' } } = req.body;
+            const { id, payload }: { id: string, payload: { checkout_id: string, reference: string, status: 'PENDING' | 'PAID' | 'FAILED' } } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
             const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
             if (restaurant === null) { throw new UnauthorizedError() };
 
-            // const tab = await Tab.findById(tabId) as Tab;
-            // if (!tab) { throw new NotFoundError('Invalid tab id') };
+            const tab = await Tab.findByTransactionId(id) as Tab;
 
-            // const data = await restaurantInterface.attemptInitiateSumUpSoloTransaction(tab);
-            // if (!data) {
-            //     return res.sendStatus(400);
-            // }
-            // else {
-            //     return res.status(200).json({ data });
-            // };
+            tab.tab_status = "resolved"
+            await tab.save();
+
+            io.to(restaurantInterface.restaurant_id as string).emit('transaction');
 
             console.log(req.body)
 

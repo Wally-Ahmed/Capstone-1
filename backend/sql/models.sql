@@ -251,6 +251,7 @@ CREATE TABLE Tab (
     calculated_tax DECIMAL(8, 2),
     total_tip DECIMAL(8, 2),
     time_completed TIMESTAMPTZ,
+    transaction_id TEXT,
     tab_status VARCHAR(255),
     FOREIGN KEY (tab_status) REFERENCES Tab_status(status), --
     server_restaurant_employee_id UUID NOT NULL,

@@ -31,6 +31,7 @@ export class Tab extends DatabaseObject {
         public restaurant_id: string,
         public tab_status: string = 'open',
         public discount: number = 0,
+        public transaction_id: string | null = null,
         public time_completed: Date | null = null,
         public calculated_tax: number | null = null,
         public total_tip: number | null = null,
@@ -44,6 +45,7 @@ export class Tab extends DatabaseObject {
             total_tip,
             tab_status,
             time_completed,
+            transaction_id,
             server_restaurant_employee_id,
             restaurant_table_id,
             restaurant_id,
@@ -109,6 +111,7 @@ export class Tab extends DatabaseObject {
                     time_completed: tab.time_completed,
                     server_restaurant_employee_id: tab.server_restaurant_employee_id,
                     restaurant_table_id: tab.restaurant_table_id,
+                    transaction_id: tab.transaction_id,
                     restaurant_id: tab.restaurant_id,
                     id: tab.id as string,
                     table_name: tables.find(table => table.id === tab.restaurant_table_id)?.table_name || null,
@@ -123,6 +126,32 @@ export class Tab extends DatabaseObject {
         } catch (err) {
             throw err;
         }
+    };
+
+    static async findByTransactionId(tab_id: string) {
+        try {
+            const res = await db.query(`SELECT * FROM Tab WHERE transaction = $1`, [tab_id]);
+
+            const row: TabProperties = res.rows[0]
+
+            const tab = new Tab(
+                row.customer_name,
+                row.server_restaurant_employee_id,
+                row.restaurant_table_id,
+                row.restaurant_id,
+                row.tab_status,
+                row.discount,
+                row.transaction_id,
+                row.time_completed,
+                row.calculated_tax,
+                row.total_tip,
+                row.id,
+            )
+            return tab;
+        } catch (err) {
+            // Handle or throw error
+            throw err;
+        };
     };
 
     async getTickets(): Promise<Ticket[]> {

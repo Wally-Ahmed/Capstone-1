@@ -136,7 +136,7 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
         });
 
         socket.on('transaction', async () => {
-            alert('hit')
+            console.log('hithithit')
         });
 
         socket.on('disconnect', () => {

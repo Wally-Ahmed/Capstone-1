@@ -166,6 +166,7 @@ export interface TabProperties extends DatabaseObjectProperties {
     calculated_tax: number | null;
     total_tip: number | null;
     tab_status: string;
+    transaction_id: string | null;
     server_restaurant_employee_id: string;
     restaurant_table_id: string | null;
     restaurant_id: string;
