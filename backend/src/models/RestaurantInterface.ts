@@ -5,7 +5,7 @@ import { ExpressError, NotFoundError, UnauthorizedError, BadRequestError, Forbid
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import { oauth2SumUpClientId, oauth2SumUpClientSecret, secretKey } from '../config';
+import { backendURL, oauth2SumUpClientId, oauth2SumUpClientSecret, secretKey } from '../config';
 import { access } from 'fs';
 import { Tab } from './Tab';
 import { Restaurant } from './Restaurant';
@@ -245,9 +245,7 @@ export class RestaurantInterface extends DatabaseObject {
 
     async attemptInitiateSumUpSoloTransaction(tab: Tab): Promise<Record<string, any> | null> {
         const restaurant = await Restaurant.findById(tab.restaurant_id) as Restaurant
-        console.log(((await tab.getSubTotalPrice()) * 100))
         return await this.attemptSumUpOauthAction(async (access_token) => {
-            console.log(`${window.location.origin}/interface/tabs/checkout/sumup/sumup-solo/process-checkout`)
             return await fetch(`https://api.sumup.com/v0.1/merchants/${this.sumup_merchant_code}/readers/${this.sumup_solo_id}/checkout`, {
                 method: 'POST',
                 headers: {
@@ -262,7 +260,7 @@ export class RestaurantInterface extends DatabaseObject {
                     },
                     tip_rates: [0.18, 0.20, 0.25],
                     description: `${restaurant.restaurant_name}: ${restaurant.restaurant_address}. ${new Date().toLocaleString()}.`,
-                    return_url: `${window.location.origin}interface/tabs/checkout/sumup/sumup-solo/process-checkout`
+                    return_url: `${backendURL}interface/tabs/checkout/sumup/sumup-solo/process-checkout`
                 })
             });
         });
