@@ -361,6 +361,7 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
             if (data.verified) {
                 setShowSelectSumUpSolo(true)
             } else {
+                console.log(`https://api.sumup.com/authorize?response_type=code&client_id=${oauth2SumUpClientId}&redirect_uri=${window.location.origin}${'/app/tabs/sumup-login'}&scope=${'user.app-settings transactions.history user.profile_readonly user.profile readers.read readers.write'}`)
                 router.push(`https://api.sumup.com/authorize?response_type=code&client_id=${oauth2SumUpClientId}&redirect_uri=${window.location.origin}${'/app/tabs/sumup-login'}&scope=${'user.app-settings transactions.history user.profile_readonly user.profile readers.read readers.write'}`)
             }
 
