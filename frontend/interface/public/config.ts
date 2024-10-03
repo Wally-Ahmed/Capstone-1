@@ -1,3 +1,3 @@
-import { backendURL, adminURL, oauth2SumUpClientId, oauth2SumUpClientSecret } from '../../../globalConfig'
+import { backendURL, adminURL, oauth2SumUpClientId } from '../../../globalConfig'
 
-export { backendURL, adminURL, oauth2SumUpClientId, oauth2SumUpClientSecret };
+export { backendURL, adminURL, oauth2SumUpClientId };
