@@ -58,7 +58,7 @@ const CheckoutForm = ({ checkoutMethods, getCheckoutMethods, closeCheckoutForm, 
 
                     <div className="mt-2">
                         {checkoutMethods && (<>
-                            {checkoutMethods.find(method => method.method === "Cash") && <button type="button" onClick={() => handleCheckOutCash()} className="mt-3 w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-green-400">Cash</button>}
+                            {checkoutMethods.find(method => method.method === "Cash") && <button type="button" onClick={() => handleCheckOutCash()} className="mt-3 w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-green-400">Cash/ Confirm Transaction</button>}
                             {checkoutMethods.find(method => method.method === "SumUp-Solo") && <button type="button" onClick={() => handleCheckOutSumUpSolo()} className="mt-3 w-full h-[50px] flex justify-center items-center p-2 border rounded-lg bg-blue-500">SumUp-Solo</button>}
                         </>)}
 

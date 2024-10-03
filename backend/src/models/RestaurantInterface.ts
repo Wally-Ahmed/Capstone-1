@@ -258,7 +258,7 @@ export class RestaurantInterface extends DatabaseObject {
                         "minor_unit": 2,
                         "value": Math.floor((await tab.getSubTotalPrice()) * 100)
                     },
-                    tip_rates: [0.18, 0.20, 0.25],
+                    // tip_rates: [0.18, 0.20, 0.25],
                     description: `${restaurant.restaurant_name}: ${restaurant.restaurant_address}. ${new Date().toLocaleString()}.`,
                     return_url: `${backendURL}interface/tabs/checkout/sumup/sumup-solo/process-checkout`
                 })

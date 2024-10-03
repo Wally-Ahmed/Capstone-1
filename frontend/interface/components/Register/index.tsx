@@ -502,7 +502,7 @@ const Register: React.FC<RegisterProps> = ({ jwt }) => {
         setShowLoadingSpinner(false);
         if (res.ok) {
             console.log(await res.json())
-            alert('Transaction Successful')
+            alert('Transaction request was successfully sent.')
             router.push('/app/tabs');
         } else {
             alert('Failed to initiate transaction. Please make sure device is turned on, connected, and is not proccessing another transaction.')
