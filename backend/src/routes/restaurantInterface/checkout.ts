@@ -15,6 +15,7 @@ import { JSONSchemaType } from 'ajv';
 import linkSumUpSoloSchema from './schemas/linkSumUpSoloSchema';
 import checkoutSchema from './schemas/checkoutSchema';
 import { io } from '../../__utilities__/app';
+import { oauth2SumUpClientId, oauth2SumUpClientSecret } from '../../config';
 
 
 const router = express.Router();
@@ -97,17 +98,32 @@ router.route('/sumup-oauth-login')
     .post(authenticateInterface, validateSchema(connectSumUpOauthSchema as JSONSchemaType<any>), async (req: InterfaceRequest, res: Response, next: NextFunction) => {
         const restaurantInterface = req.restaurantInterface as RestaurantInterface;
         try {
-            const { access_token, refresh_token, code }: { access_token: string, refresh_token: string, code: string } = req.body;
+            const { code }: { code: string } = req.body;
             if (restaurantInterface === undefined) { throw new UnauthorizedError() };
             const restaurant = await Restaurant.findById(restaurantInterface.restaurant_id) as Restaurant | null;
             if (restaurant === null) { throw new UnauthorizedError() };
 
-            if (!access_token || !refresh_token || !code) {
+            if (!code) {
                 throw new BadRequestError("Required parameters are missing.");
             };
 
-            restaurantInterface.sumup_oauth2_access_token = access_token;
-            restaurantInterface.sumup_oauth2_refresh_token = refresh_token;
+            const tokenRes = await fetch(`https://api.sumup.com/token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    grant_type: "authorization_code",
+                    client_id: oauth2SumUpClientId,
+                    client_secret: oauth2SumUpClientSecret,
+                    code: code
+                })
+            });
+
+            const tokenData: { access_token: string, refresh_token: string, expires_in: number, scope: string, token_type: string } = await tokenRes.json()
+
+            restaurantInterface.sumup_oauth2_access_token = tokenData.access_token;
+            restaurantInterface.sumup_oauth2_refresh_token = tokenData.refresh_token;
             restaurantInterface.sumup_oauth2_code = code;
 
             const user = await restaurantInterface.attemptGetSumUpProfile() as Record<string, any>
