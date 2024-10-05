@@ -147,43 +147,20 @@ We're committed to continuous improvement:
 - **Employee Scheduling Module**: Create and manage staff schedules.
 - **Payroll Integration**: Facilitate payroll through Stripe.
 - **Expanded Payment Options**: Support for additional card readers and services.
-- **Advanced Analytics**: Deeper insights into operations and customer trends.
 - **Mobile App Development**: Native apps for iOS and Android devices.
-- **API Access**: Allow developers to build custom integrations.
+- **Advanced Analytics**: Deeper insights into operations and customer trends.
 
 ## Contact Information
 
 We'd love to hear from you:
 
 - **Email**: [wally00.dev@gmail.com](mailto:wally00.dev@gmail.com)
-- **Support Hours**: Monday to Friday, 9 AM - 5 PM (Your Time Zone)
-- **Social Media**: (Links to social media profiles, if available)
+- **Social Media**: [LinkedIn](https://www.linkedin.com/in/wally-ahmed/)
 
-## Frequently Asked Questions (FAQs)
-
-**Q: Is Restaurant Admin suitable for small restaurants?**
-
-A: Absolutely! Our platform is designed to scale with your business, whether you're a small cafe or a large restaurant chain.
-
-**Q: What devices are compatible with Restaurant Admin?**
-
-A: Any device capable of running a modern web browser, including desktops, laptops, tablets, and smartphones.
-
-**Q: How secure is my data?**
-
-A: We prioritize security by using encryption protocols and secure servers to protect your data.
-
-**Q: Can I integrate other payment systems besides SumUp Solo?**
-
-A: Currently, we support SumUp Solo, but we're working on integrating more payment options in the future.
-
-**Q: Will there be training available for new users?**
-
-A: Yes, we plan to offer tutorials and user guides to help you get the most out of Restaurant Admin.
 
 ## Acknowledgments
 
-Thank you to all our early adopters and beta testers who have provided invaluable feedback. Your support helps us improve and deliver a better product.
+Thank you to Thank you to Springboad and my fellow cohort members who have provided invaluable feedback. Your support helps us improve and deliver a better product.
 
 ---
 
