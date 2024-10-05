@@ -80,7 +80,6 @@ Our POS system is designed to handle all aspects of your restaurant operations:
 
 - **Transaction Management**: Process orders and payments efficiently.
 - **Order Tracking**: Monitor orders from placement to fulfillment.
-- **Inventory Management**: Keep track of stock levels in real-time.
 - **Reporting and Analytics**: Gain insights into sales, customer behavior, and more.
 
 ### Employee Management
